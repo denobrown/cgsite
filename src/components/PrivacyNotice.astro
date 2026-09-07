@@ -1,0 +1,63 @@
+---
+// src/components/PrivacyNotice.astro
+//
+// This site doesn't set tracking cookies (see /privacy), so this is a
+// courtesy notice rather than a legally-mandated consent gate — but for a
+// compliance-focused firm's own site, saying so explicitly and linking to
+// the real Privacy Policy is the honest version of "cookie banner," rather
+// than a boilerplate consent widget implying tracking that doesn't happen.
+//
+// Rendered hidden by default. The inline bootstrap below checks
+// localStorage (never a cookie) and reveals the banner only if the visitor
+// hasn't dismissed it before. If JS is disabled, the banner simply never
+// appears — a reasonable default given dismissal itself requires JS.
+---
+
+<div
+  id="cga-privacy-notice"
+  hidden
+  class="fixed inset-x-4 bottom-5 z-30 mx-auto flex max-w-xl flex-col gap-3 rounded-xl border border-midnight-border bg-midnight-surface/95 p-4 shadow-card-hover backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between"
+>
+  <p class="text-[12.5px] leading-relaxed text-ink-secondary">
+    We don't use tracking cookies or sell data. See our
+    <a href="/privacy" class="text-signal-blue hover:underline">Privacy Policy</a>
+    for exactly what this site does collect.
+  </p>
+  <button
+    type="button"
+    id="cga-privacy-notice-dismiss"
+    class="shrink-0 rounded-md bg-signal-blue-dim px-3 py-2 text-[12.5px] font-semibold text-white transition-all hover:brightness-90 sm:self-auto"
+  >
+    Got it
+  </button>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = "cga-privacy-notice-dismissed";
+    var el = document.getElementById("cga-privacy-notice");
+    var btn = document.getElementById("cga-privacy-notice-dismiss");
+    if (!el || !btn) return;
+
+    try {
+      if (!localStorage.getItem(KEY)) {
+        el.hidden = false;
+      }
+    } catch (e) {
+      // Storage unavailable (private browsing, disabled storage, etc.) —
+      // fail closed and never show the banner rather than show it every
+      // single visit with no way to remember dismissal.
+      return;
+    }
+
+    btn.addEventListener("click", function () {
+      el.hidden = true;
+      try {
+        localStorage.setItem(KEY, "1");
+      } catch (e) {
+        // Nothing more we can do — the banner will simply reappear next
+        // visit if storage isn't available, which is the safe failure mode.
+      }
+    });
+  })();
+</script>

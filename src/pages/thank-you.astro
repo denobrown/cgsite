@@ -1,0 +1,37 @@
+---
+// src/pages/thank-you.astro
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Thank you — CloudGrid Africa"
+  description="Your consultation request has been received."
+  noIndex={true}
+>
+  <Navbar />
+  <main id="main-content" class="flex min-h-[70vh] items-center pt-32 pb-24">
+    <div class="cga-container">
+      <div class="mx-auto max-w-lg text-center">
+        <span class="relative mx-auto mb-6 flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-emerald"></span>
+        </span>
+        <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Request received.
+        </h1>
+        <p class="mt-5 text-[14.5px] leading-relaxed text-ink-secondary">
+          A principal engineer — not a sales rep — will reply within one business day. If it's
+          urgent, call <a href="tel:+254721656835" class="text-signal-blue hover:underline">+254 721 656 835</a>.
+        </p>
+        <a
+          href="/"
+          class="mt-10 inline-flex items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-semibold text-midnight transition-colors duration-200 hover:bg-ink-primary"
+        >
+          ← Back to CloudGrid Africa
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

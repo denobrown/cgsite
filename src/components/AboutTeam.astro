@@ -1,0 +1,103 @@
+---
+// src/components/AboutTeam.astro
+const pillars = [
+  {
+    title: "Sovereign Compliance",
+    detail: "Kenya DPA 2019",
+    text: "Every architecture decision is checked against the Data Protection Act before it ships — not retrofitted after an ODPC inquiry.",
+  },
+  {
+    title: "Sub-50ms Engineering",
+    detail: "M-Pesa API / Edge",
+    text: "Edge-network optimization built for Daraja callback latency and East African connectivity realities, not idealized bandwidth.",
+  },
+  {
+    title: "Active Governance",
+    detail: "Direct Escalation",
+    text: "A direct line to a principal architect, not a ticket queue routed through three time zones before someone with authority reads it.",
+  },
+];
+
+const team = [
+  {
+    name: "Alvin Chirchir",
+    role: "Founder & Principal Cloud Architect",
+    focus: "Core Infrastructure & Virtualization",
+    initials: "AC",
+  },
+  {
+    name: "Brian Osoro",
+    role: "Principal Security Engineer & Director of Compliance",
+    focus: "Advanced Penetration Testing & Data Privacy Regulations",
+    initials: "BO",
+  },
+];
+---
+
+<section id="team" class="py-24 sm:py-32">
+  <div class="cga-container">
+    <!-- Title panel -->
+    <div class="grid grid-cols-1 gap-10 border-b border-midnight-border pb-16 lg:grid-cols-2 lg:gap-20">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Local Execution.<br />Global Standards.
+      </h2>
+      <p class="max-w-lg text-[15px] leading-relaxed text-ink-secondary">
+        CloudGrid Africa builds zero-latency architecture from a Nairobi engineering floor —
+        co-located at Raxio Data Centre — rather than assembling automated foreign templates
+        and shipping them across a continent's worth of latency. Every system we deploy is
+        engineered, tested, and governed by people who operate inside the same regulatory and
+        network reality our clients do.
+      </p>
+    </div>
+
+    <!-- Pillars -->
+    <div class="grid grid-cols-1 gap-5 py-16 sm:grid-cols-3">
+      {
+        pillars.map((pillar) => (
+          <div class="border-t border-midnight-border pt-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-signal-blue">
+              {pillar.detail}
+            </p>
+            <h3 class="mt-2 text-base font-semibold text-white">{pillar.title}</h3>
+            <p class="mt-2.5 text-[14px] leading-relaxed text-ink-secondary">{pillar.text}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Team cards -->
+    <div class="grid grid-cols-1 gap-5 border-t border-midnight-border pt-16 sm:grid-cols-2">
+      {
+        team.map((member) => (
+          <article class="cga-card flex items-start gap-5 p-7">
+            <div
+              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-midnight-border bg-gradient-to-br from-midnight-raised to-midnight-surface font-mono text-[13px] font-semibold text-ink-muted"
+              aria-hidden="true"
+            >
+              {member.initials}
+            </div>
+            <div>
+              <h3 class="text-[15px] font-semibold text-white">{member.name}</h3>
+              <p class="mt-1 text-[13px] font-medium text-signal-blue">{member.role}</p>
+              <p class="mt-2 text-[13px] leading-relaxed text-ink-secondary">{member.focus}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Semantic web: Person entities for the named principals, linked back to
+     the Organization via worksFor. Built from the same `team` array
+     rendering the cards above. -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": team.map((member) => ({
+    "@type": "Person",
+    "name": member.name,
+    "jobTitle": member.role,
+    "worksFor": { "@id": "https://cloudgridafrica.com/#organization" },
+    "knowsAbout": member.focus,
+  })),
+})} />

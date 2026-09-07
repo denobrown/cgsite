@@ -1,0 +1,138 @@
+---
+// src/pages/privacy.astro
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+const lastUpdated = "September 2026";
+---
+
+<Layout
+  title="Privacy Policy — CloudGrid Africa"
+  description="How CloudGrid Africa collects, uses, and protects personal data on cloudgridafrica.com, in line with the Kenya Data Protection Act 2019."
+>
+  <Navbar />
+  <main id="main-content" class="pt-32 pb-24">
+    <div class="cga-container">
+      <div class="mx-auto max-w-3xl">
+        <p class="cga-eyebrow">Legal</p>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Privacy Policy</h1>
+        <p class="mt-3 text-[13px] text-ink-muted">Last updated: {lastUpdated}</p>
+
+        <div class="prose prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-white prose-p:text-[14.5px] prose-p:leading-relaxed prose-p:text-ink-secondary prose-a:text-signal-blue prose-a:no-underline hover:prose-a:underline prose-strong:text-ink-primary prose-li:text-ink-secondary prose-hr:border-midnight-border mt-10 max-w-none">
+          <p>
+            <em>
+              This policy is provided as a plain-language reference for visitors to
+              cloudgridafrica.com. It is not a substitute for legal advice, and CloudGrid
+              Africa recommends independent legal review before relying on it for
+              compliance purposes beyond this website.
+            </em>
+          </p>
+
+          <h2>Who we are</h2>
+          <p>
+            CloudGrid Africa ("we", "us") is a cloud and cybersecurity engineering firm
+            based in Westlands, Nairobi, Kenya, co-located at Raxio Data Centre Nairobi.
+            We are the data controller for personal data collected through
+            cloudgridafrica.com. Contact us at
+            <a href="mailto:hello@cloudgridafrica.com">hello@cloudgridafrica.com</a> or
+            +254 721 656 835 for any privacy question.
+          </p>
+
+          <h2>What we actually collect on this site</h2>
+          <p>We keep this section specific to what this website does, not a generic list:</p>
+          <ul>
+            <li>
+              <strong>Contact form (/#contact):</strong> your name, work email, and the
+              message you submit. Sent to us via <a href="https://resend.com" target="_blank" rel="noopener noreferrer">Resend</a>,
+              our transactional email provider, and to our inbox at hello@cloudgridafrica.com.
+              We use this solely to respond to your enquiry.
+            </li>
+            <li>
+              <strong>Chat widget:</strong> messages you type into the chat widget are sent
+              to Anthropic's Claude API to generate a response. We do not attach your name,
+              email, or any other identifying information to these messages unless you type
+              it yourself. Conversation history is kept only in your browser's memory for
+              that visit — it is not stored on our servers and disappears when you close or
+              reload the page.
+            </li>
+            <li>
+              <strong>Live weather &amp; time display:</strong> the "Live Systems Strip" on
+              our homepage fetches current Nairobi weather from
+              <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.
+              This is a fixed location lookup (Nairobi's coordinates) — no data about you or
+              your device is sent to Open-Meteo.
+            </li>
+            <li>
+              <strong>Performance and traffic analytics:</strong> we use Vercel Web
+              Analytics and Vercel Speed Insights to understand aggregate visitor numbers
+              and page performance. Both are designed to operate without setting tracking
+              cookies and without building an individual profile of you across other sites.
+            </li>
+          </ul>
+
+          <h2>Cookies</h2>
+          <p>
+            This site does not use cookies for advertising or cross-site tracking. Some
+            interface preferences — such as whether you've dismissed the cookie notice —
+            are stored using your browser's local storage rather than a cookie. This
+            information stays on your device and is never transmitted to us.
+          </p>
+
+          <h2>Legal basis for processing</h2>
+          <p>
+            Under the Kenya Data Protection Act 2019, we process the data described above
+            on the basis of your consent (submitting the contact form or using the chat
+            widget is a voluntary action) and our legitimate interest in responding to
+            business enquiries and operating a functioning website.
+          </p>
+
+          <h2>How long we keep it</h2>
+          <p>
+            Contact form submissions and their associated email threads are retained for as
+            long as reasonably necessary to manage the business relationship, and are
+            deleted or anonymised when no longer needed. Chat widget conversations are not
+            retained by us at all beyond the browser session in which they occur.
+          </p>
+
+          <h2>Your rights under Kenya DPA 2019</h2>
+          <p>You have the right to:</p>
+          <ul>
+            <li>Be informed of how your data is used (this policy).</li>
+            <li>Access the personal data we hold about you.</li>
+            <li>Request correction of inaccurate data.</li>
+            <li>Request deletion of your data, subject to legal retention requirements.</li>
+            <li>Object to processing based on legitimate interest.</li>
+            <li>Lodge a complaint with the Office of the Data Protection Commissioner (ODPC), Kenya.</li>
+          </ul>
+          <p>
+            To exercise any of these rights, email
+            <a href="mailto:hello@cloudgridafrica.com">hello@cloudgridafrica.com</a>.
+          </p>
+
+          <h2>Data security</h2>
+          <p>
+            This site is served exclusively over HTTPS, enforces a strict
+            Content-Security-Policy, and never exposes API keys or credentials to your
+            browser — every integration with a third-party service (email, AI chat,
+            weather) is proxied through our own server-side infrastructure. Internally, we
+            apply the same engineering standards we deliver to clients.
+          </p>
+
+          <h2>Changes to this policy</h2>
+          <p>
+            We may update this policy as the site changes. Material changes will be
+            reflected in the "Last updated" date above.
+          </p>
+
+          <hr />
+          <p>
+            Questions about this policy? <a href="/#contact">Contact us</a> or read our
+            <a href="/terms">Terms &amp; Conditions</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,73 @@
+---
+// src/components/FAQSection.astro
+const faqs = [
+  {
+    q: "Do you work with businesses outside Nairobi?",
+    a: "Yes. We engineer and support clients across East Africa remotely, with on-site engagements in Nairobi, Mombasa, and Kisumu for infrastructure work that requires physical access.",
+  },
+  {
+    q: "Can you make an existing system Kenya DPA 2019 compliant, or do we need to rebuild?",
+    a: "Almost always the former. A DPA compliance engagement typically maps your current data flows, closes the gaps against the Act's registration, consent, and breach-notification requirements, and documents a lawful basis for each processing activity — rebuilding is rarely necessary.",
+  },
+  {
+    q: "What does a penetration test with CloudGrid Africa actually include?",
+    a: "OWASP Top 10 and OWASP API Top 10 coverage, authenticated and unauthenticated testing paths, a scored findings report with remediation guidance, and a free re-test once fixes are deployed.",
+  },
+  {
+    q: "We're already on AWS or Azure — do you replace our setup or work within it?",
+    a: "We work within it. Engagements typically start with an architecture and cost review of what's already running, then optimize, harden, and extend it rather than defaulting to a rebuild.",
+  },
+  {
+    q: "How fast can M-Pesa Daraja integration work start?",
+    a: "A scoped Daraja integration — STK Push, C2B, or B2B/B2C — typically begins within a week of a signed statement of work, once sandbox credentials and callback requirements are confirmed.",
+  },
+];
+---
+
+<section id="faq" class="py-24 sm:py-32">
+  <div class="cga-container">
+    <div class="mx-auto mb-14 max-w-2xl text-center">
+      <p class="cga-eyebrow justify-center">FAQ</p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Questions we hear before every engagement.
+      </h2>
+    </div>
+
+    <div class="mx-auto max-w-2xl divide-y divide-midnight-border border-y border-midnight-border">
+      {
+        faqs.map((item, i) => (
+          <details class="group py-5" open={i === 0}>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-white marker:content-none">
+              {item.q}
+              <span
+                class="shrink-0 text-ink-muted transition-transform duration-200 group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p class="mt-3 pr-8 text-[14px] leading-relaxed text-ink-secondary">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Semantic web: FAQPage schema, built from the exact same `faqs` array
+     rendering the accordion above — no duplicated content to drift out of
+     sync. This is the single highest-value structured-data addition on the
+     site for organic search: Google renders eligible FAQ pages as rich
+     snippets directly in results. -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((item) => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a,
+    },
+  })),
+})} />

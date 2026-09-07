@@ -1,0 +1,51 @@
+---
+// src/pages/404.astro
+// Astro serves this automatically for any unmatched route on both Vercel
+// and Netlify's static hosting — no routing config needed for either
+// platform to pick it up.
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Page not found — CloudGrid Africa"
+  description="The page you're looking for doesn't exist or has moved."
+  noIndex={true}
+>
+  <Navbar />
+  <main id="main-content" class="flex min-h-[70vh] items-center pt-32 pb-24">
+    <div class="cga-container">
+      <div class="mx-auto max-w-lg text-center">
+        <p class="font-mono text-6xl font-bold text-signal-blue">404</p>
+        <h1 class="mt-4 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          This route doesn't resolve.
+        </h1>
+        <p class="mt-4 text-[14.5px] leading-relaxed text-ink-secondary">
+          The page you're looking for was moved, renamed, or never existed. Here's where you
+          probably meant to go:
+        </p>
+
+        <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <a href="/" class="cga-card px-4 py-4 text-[13.5px] font-medium text-white">
+            Home
+          </a>
+          <a href="/blog" class="cga-card px-4 py-4 text-[13.5px] font-medium text-white">
+            Engineering Notes
+          </a>
+          <a href="/#contact" class="cga-card px-4 py-4 text-[13.5px] font-medium text-white">
+            Contact us
+          </a>
+        </div>
+
+        <p class="mt-10 text-[12.5px] text-ink-muted">
+          If you followed a link from elsewhere on the internet to get here, that link may
+          be outdated — let us know at
+          <a href="mailto:hello@cloudgridafrica.com" class="text-signal-blue hover:underline">hello@cloudgridafrica.com</a>
+          and we'll fix it.
+        </p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

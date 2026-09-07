@@ -1,0 +1,91 @@
+---
+// src/components/ContactSection.astro
+//
+// Vercel port: Netlify Forms (data-netlify="true") has no equivalent on
+// Vercel, so this now posts to api/contact.js — a Vercel Edge Function that
+// sends the message via Resend. Deliberately kept as a PLAIN HTML FORM POST
+// with no client-side fetch/JS at all, preserving the same
+// zero-unnecessary-JS posture the Netlify Forms version had. See
+// api/contact.js for the required RESEND_API_KEY and the honest-failure
+// behavior if it's unset.
+//
+// The honeypot field is hidden off-screen (absolute positioning + zero
+// size) rather than via display:none — display:none fields are the first
+// thing unsophisticated form-spam bots learn to skip, so an off-screen
+// positioned field that's still "visible" to a naive DOM-filling bot is a
+// more effective trap.
+---
+
+<section id="contact" class="py-24 sm:py-32">
+  <div class="cga-container">
+    <div class="mx-auto grid max-w-4xl grid-cols-1 gap-14 lg:grid-cols-2 lg:items-start">
+      <div>
+        <p class="cga-eyebrow">Get in touch</p>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Schedule an engineering consultation.
+        </h2>
+        <p class="mt-5 max-w-sm text-[14.5px] leading-relaxed text-ink-secondary">
+          Tell us what you're running and where it hurts. A principal engineer — not a sales
+          rep — replies within one business day.
+        </p>
+      </div>
+
+      <form
+        name="consultation-request"
+        method="POST"
+        action="/api/contact"
+        class="cga-card space-y-5 p-7"
+      >
+        <div class="absolute left-[-9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+          <label>
+            Leave this field blank
+            <input name="company-website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <div>
+          <label for="name" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            class="w-full rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
+            placeholder="Jane Wanjiru"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">Work email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="w-full rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
+            placeholder="jane@company.co.ke"
+          />
+        </div>
+
+        <div>
+          <label for="message" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">What are you looking to solve?</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            required
+            class="w-full resize-none rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
+            placeholder="Cloud migration, pentest, DPA compliance, custom application..."
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-md bg-white px-4 py-3 text-[14px] font-semibold text-midnight transition-colors duration-200 hover:bg-ink-primary"
+        >
+          Send Request
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,100 @@
+---
+// src/components/Navbar.astro
+const navLinks = [
+  { label: "Services", href: "/#capabilities" },
+  { label: "Case Studies", href: "/#case-studies" },
+  { label: "Team", href: "/#team" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "/#faq" },
+];
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-50 border-b border-midnight-border/60 bg-midnight/70 backdrop-blur-md"
+>
+  <nav class="cga-container flex h-16 items-center justify-between" aria-label="Primary">
+    <!-- Wordmark + glyph -->
+    <a href="/" class="group flex items-center gap-2.5" aria-label="CloudGrid Africa — home">
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 26 26"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="shrink-0"
+      >
+        <rect x="0.5" y="0.5" width="25" height="25" rx="6.5" stroke="#2A3345" stroke-width="1" />
+        <path
+          d="M13 5.5L19.5 9.2V16.8L13 20.5L6.5 16.8V9.2L13 5.5Z"
+          stroke="#3B82F6"
+          stroke-width="1.4"
+          stroke-linejoin="round"
+        />
+        <path d="M13 5.5V13M13 13L19.5 9.2M13 13L6.5 9.2M13 13V20.5" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.55" />
+        <circle cx="13" cy="13" r="1.6" fill="#10B981" />
+      </svg>
+      <span class="text-[15px] font-semibold tracking-tight text-white">
+        CloudGrid <span class="font-normal text-ink-secondary">Africa</span>
+      </span>
+    </a>
+
+    <!-- Center links -->
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-[13.5px] font-medium text-ink-secondary transition-colors duration-200 hover:text-white"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- CTA -->
+    <div class="flex items-center gap-3">
+      <a
+        href="/#contact"
+        class="group hidden items-center gap-1.5 rounded-md bg-white px-4 py-2 text-[13px] font-semibold text-midnight transition-all duration-200 hover:bg-ink-primary sm:inline-flex"
+      >
+        Request a Consultation
+        <span class="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">→</span>
+      </a>
+
+      <!-- Mobile menu (no-JS: pure CSS checkbox toggle) -->
+      <input type="checkbox" id="cga-nav-toggle" class="peer sr-only" />
+      <label
+        for="cga-nav-toggle"
+        class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border border-midnight-border text-ink-secondary md:hidden"
+        aria-label="Toggle navigation menu"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 4h14M1 8h14M1 12h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>
+      </label>
+      <div
+        class="fixed inset-x-0 top-16 z-40 hidden max-h-0 flex-col gap-1 overflow-hidden border-b border-midnight-border bg-midnight/97 px-6 py-0 backdrop-blur-md transition-all duration-300 peer-checked:flex peer-checked:max-h-96 peer-checked:py-4 md:hidden"
+      >
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="rounded-md px-3 py-2.5 text-sm font-medium text-ink-secondary hover:bg-midnight-raised hover:text-white"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          href="/#contact"
+          class="mt-1 rounded-md bg-white px-3 py-2.5 text-center text-sm font-semibold text-midnight"
+        >
+          Request a Consultation →
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>

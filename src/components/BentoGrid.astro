@@ -1,0 +1,172 @@
+---
+// src/components/BentoGrid.astro
+const codeLines = [
+  { n: 1, code: `POST /v1/reconcile/mpesa-callback`, tone: "fn" },
+  { n: 2, code: `  x-cga-signature: verified ✓`, tone: "comment" },
+  { n: 3, code: `` , tone: "blank" },
+  { n: 4, code: `const tx = await ledger.match({`, tone: "fn" },
+  { n: 5, code: `  checkoutRequestId: body.CheckoutRequestID,`, tone: "key" },
+  { n: 6, code: `  amount: body.Amount,`, tone: "key" },
+  { n: 7, code: `  idempotencyKey: body.MpesaReceiptNumber,`, tone: "key" },
+  { n: 8, code: `});`, tone: "fn" },
+  { n: 9, code: `` , tone: "blank" },
+  { n: 10, code: `return tx.status === "matched"`, tone: "control" },
+  { n: 11, code: `  ? ledger.settle(tx.id)   // 200 OK`, tone: "comment" },
+  { n: 12, code: `  : ledger.flag(tx.id);    // manual review`, tone: "comment" },
+];
+
+const toneClass: Record<string, string> = {
+  fn: "text-signal-blue",
+  key: "text-ink-primary",
+  control: "text-signal-emerald",
+  comment: "text-ink-faint",
+  blank: "",
+};
+
+// Semantic web: each Bento quadrant is also a real Service offering — this
+// is the actual list of things CloudGrid sells, so it's the natural place
+// for Service schema to live rather than a generic services page nobody
+// maintains. Kept in sync with the four cards below by construction (same
+// source array), not duplicated by hand.
+const services = [
+  {
+    name: "Cloud Engineering & Infrastructure",
+    description: "Architecting, migrating, and optimizing hybrid workloads across AWS and Azure.",
+    serviceType: "Cloud Infrastructure Engineering",
+  },
+  {
+    name: "Advanced Cybersecurity",
+    description: "Comprehensive penetration testing, OWASP hardening, and 24/7 proactive SOC monitoring.",
+    serviceType: "Cybersecurity Services",
+  },
+  {
+    name: "Data Protection & Privacy",
+    description: "Full structural alignment and compliance deployment for the Kenya Data Protection Act 2019.",
+    serviceType: "Data Protection Compliance",
+  },
+  {
+    name: "Custom Enterprise Applications",
+    description: "Bespoke transaction architectures, paperless automation systems, and high-performance M-Pesa API integrations.",
+    serviceType: "Custom Software Development",
+  },
+];
+---
+
+<section id="capabilities" class="py-24 sm:py-32">
+  <div class="cga-container">
+    <div class="mx-auto mb-14 max-w-2xl text-center">
+      <p class="cga-eyebrow justify-center">Capabilities</p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Four disciplines. One engineering standard.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-12 lg:grid-rows-2">
+      <!-- Q1 — Cloud Engineering & Infrastructure (large) -->
+      <article class="cga-card group flex flex-col justify-between overflow-hidden p-8 lg:col-span-8 lg:row-span-1">
+        <div>
+          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.5 12.5a3 3 0 0 1 0-6 3.75 3.75 0 0 1 7.24-1.14A2.75 2.75 0 0 1 12.25 12.5H5.5Z" stroke="#3B82F6" stroke-width="1.2" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Cloud Engineering &amp; Infrastructure</h3>
+          <p class="mt-2.5 max-w-md text-[14.5px] leading-relaxed text-ink-secondary">
+            Architecting, migrating, and optimizing hybrid workloads across AWS and Azure.
+          </p>
+        </div>
+        <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
+          <span class="font-mono text-2xl font-semibold text-signal-blue">40%</span>
+          <span class="text-[13px] text-ink-muted">Average Downtime Reduction</span>
+        </div>
+      </article>
+
+      <!-- Q2 — Advanced Cybersecurity (small) -->
+      <article class="cga-card group flex flex-col justify-between p-8 lg:col-span-4 lg:row-span-1">
+        <div>
+          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 2.5 14.5 4.5v4c0 3.4-2.3 6.1-5.5 7-3.2-.9-5.5-3.6-5.5-7v-4L9 2.5Z" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Advanced Cybersecurity</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+            Comprehensive penetration testing, OWASP hardening, and 24/7 proactive SOC monitoring.
+          </p>
+        </div>
+        <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
+          <span class="font-mono text-2xl font-semibold text-signal-emerald">0</span>
+          <span class="text-[13px] text-ink-muted">Breaches Recorded</span>
+        </div>
+      </article>
+
+      <!-- Q3 — Data Protection & Privacy (small) -->
+      <article class="cga-card group flex flex-col justify-between p-8 lg:col-span-4 lg:row-span-1">
+        <div>
+          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="10" height="7" rx="1.5" stroke="#3B82F6" stroke-width="1.2" />
+              <path d="M6.5 8V5.5a2.5 2.5 0 0 1 5 0V8" stroke="#3B82F6" stroke-width="1.2" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Data Protection &amp; Privacy</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+            Full structural alignment and compliance deployment for the Kenya Data Protection Act 2019.
+          </p>
+        </div>
+        <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
+          <span class="font-mono text-2xl font-semibold text-signal-blue">100%</span>
+          <span class="text-[13px] text-ink-muted">Audit-Ready</span>
+        </div>
+      </article>
+
+      <!-- Q4 — Custom Enterprise Applications (large, with code snippet) -->
+      <article class="cga-card group grid grid-cols-1 gap-6 overflow-hidden p-8 lg:col-span-8 lg:row-span-1 lg:grid-cols-2 lg:items-center">
+        <div>
+          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 5 3 9l3 4M12 5l3 4-3 4M10.5 3.5 7.5 14.5" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Custom Enterprise Applications</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+            Bespoke transaction architectures, paperless automation systems, and high-performance
+            M-Pesa API integrations.
+          </p>
+          <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
+            <span class="font-mono text-2xl font-semibold text-signal-emerald">KES 18M+</span>
+            <span class="text-[13px] text-ink-muted">Secured &amp; Processed</span>
+          </div>
+        </div>
+
+        <!-- Simulated code block -->
+        <div class="overflow-hidden rounded-lg border border-midnight-border bg-[#0A0D13]">
+          <div class="flex items-center gap-1.5 border-b border-midnight-border px-3.5 py-2.5">
+            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
+            <span class="ml-2 font-mono text-[11px] text-ink-faint">reconcile.route.ts</span>
+          </div>
+          <pre class="overflow-x-auto px-4 py-4 font-mono text-[12px] leading-[1.75]"><code>{codeLines.map((line) => (
+            <span class="grid grid-cols-[1.5rem_1fr]">
+              <span class="select-none text-ink-faint/60">{line.n || ""}</span>
+              <span class={toneClass[line.tone]}>{line.code}</span>
+            </span>
+          ))}</code></pre>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": services.map((s) => ({
+    "@type": "Service",
+    "name": s.name,
+    "description": s.description,
+    "serviceType": s.serviceType,
+    "provider": { "@id": "https://cloudgridafrica.com/#organization" },
+    "areaServed": { "@type": "Country", "name": "Kenya" },
+  })),
+})} />

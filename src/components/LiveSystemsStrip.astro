@@ -1,0 +1,95 @@
+---
+// src/components/LiveSystemsStrip.astro
+//
+// Signature element. CloudGrid Africa builds systems that report their own
+// status — so the marketing site does too, instead of decorating itself with
+// a stock hero illustration. Three read-outs, rendered like a terminal
+// `status` command: live Nairobi time, live Nairobi weather, and the
+// security tip of the day.
+//
+// Only the time + weather values are genuinely time-sensitive enough to
+// justify client JS (see public/scripts/live-strip.js, loaded as an external
+// module — never inline, so netlify.toml's CSP stays hash-free). The
+// security tip does NOT need per-second freshness, so it is resolved here at
+// BUILD TIME from src/data/security-tips.json and shipped as plain static
+// HTML — zero JS for that segment. It advances daily because the same
+// scheduled Netlify Function that generates the day's blog post
+// (netlify/functions/generate-daily-post.js) also fires a deploy hook,
+// rebuilding the site once every 24h.
+
+import tips from "../data/security-tips.json";
+
+const now = new Date();
+const dayIndex = (now.getUTCDate() - 1) % tips.length;
+const todaysTip = tips[dayIndex];
+
+const levelStyles: Record<string, string> = {
+  info: "text-signal-emerald border-signal-emerald/30 bg-signal-emerald/10",
+  advisory: "text-signal-amber border-signal-amber/30 bg-signal-amber/10",
+};
+
+// Server-rendered initial paint for time (JS refines it to the second and
+// keeps the clock ticking; this value is correct at build/deploy time and
+// close enough at first paint even before hydration).
+const buildTimeNairobi = new Intl.DateTimeFormat("en-KE", {
+  timeZone: "Africa/Nairobi",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+}).format(now);
+---
+
+<section
+  aria-label="Live systems status"
+  class="border-y border-midnight-border bg-midnight-surface/40"
+>
+  <div class="cga-container">
+    <div class="grid grid-cols-1 divide-y divide-midnight-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <!-- Local time -->
+      <div class="flex items-center gap-3 py-4 sm:justify-center sm:py-5">
+        <span class="relative flex h-1.5 w-1.5 shrink-0">
+          <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-emerald"></span>
+        </span>
+        <div class="font-mono">
+          <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Nairobi — Local Time</p>
+          <p class="mt-0.5 text-[15px] tabular-nums text-ink-primary" data-live="time" data-fallback={buildTimeNairobi}>
+            {buildTimeNairobi} <span class="text-ink-muted">EAT</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Weather -->
+      <div class="flex items-center gap-3 py-4 sm:justify-center sm:py-5">
+        <span class="relative flex h-1.5 w-1.5 shrink-0">
+          <span class="inline-flex h-full w-full rounded-full bg-signal-blue"></span>
+        </span>
+        <div class="font-mono">
+          <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Nairobi — Conditions</p>
+          <p class="mt-0.5 text-[15px] text-ink-primary" data-live="weather" data-fallback="—">
+            Reading sensor feed<span class="animate-pulse">…</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Security tip of the day -->
+      <div class="flex items-start gap-3 py-4 sm:py-5">
+        <span
+          class:list={[
+            "mt-[3px] shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider",
+            levelStyles[todaysTip.level],
+          ]}
+        >
+          {todaysTip.tag}
+        </span>
+        <div>
+          <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Security Tip of the Day</p>
+          <p class="mt-0.5 max-w-md text-[13px] leading-snug text-ink-secondary">
+            {todaysTip.tip}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/scripts/live-strip.js" defer></script>

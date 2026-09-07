@@ -1,0 +1,173 @@
+---
+// src/components/TechIntelHub.astro
+//
+// Carried over from the previous site by explicit request. Restyled to the
+// bento/mono visual language and re-architected around a hardened proxy
+// (see netlify/functions/feed.js): the function now accepts only an exact
+// `source` key from a fixed allowlist, not an arbitrary `?url=` parameter —
+// closing the SSRF hole an open feed proxy would otherwise hand any
+// visitor. The old ?url= pattern is intentionally not carried forward.
+//
+// Progressive enhancement, deliberately, not a CSS peer-selector trick:
+//   - No JS:  all four categories render as stacked, fully-readable static
+//             sections with curated fallback headlines. Indexable, no
+//             layout shift, nothing hidden behind a broken interaction.
+//   - With JS (public/scripts/tech-intel-hub.js): the sections collapse
+//     into a tabbed interface and each active tab's list is replaced with
+//     a live fetch against the feed proxy, falling back to this same
+//     static content on any network failure.
+
+const categories = [
+  {
+    id: "security",
+    label: "Security",
+    description: "Vulnerabilities, breaches, and defensive research",
+    fallback: [
+      { title: "Track record: zero breaches across CloudGrid-managed infrastructure since inception.", source: "CloudGrid Africa" },
+      { title: "OWASP Top 10 2025 refresh moves Broken Access Control and SSRF higher in prevalence rankings.", source: "OWASP Foundation" },
+      { title: "ODPC continues active enforcement of Kenya DPA 2019 breach-notification timelines.", source: "ODPC Kenya" },
+    ],
+  },
+  {
+    id: "cloud",
+    label: "Cloud",
+    description: "AWS, Azure, and East African data infrastructure",
+    fallback: [
+      { title: "Raxio Data Centre Nairobi operates as a Tier III facility — CloudGrid's primary colocation point.", source: "CloudGrid Africa" },
+      { title: "CBK cloud computing guidance continues to shape regulated-entity migration timelines in Kenya.", source: "Central Bank of Kenya" },
+      { title: "Hybrid AWS/Azure workload patterns remain the dominant architecture among East African enterprise clients.", source: "CloudGrid Africa" },
+    ],
+  },
+  {
+    id: "tech",
+    label: "Tech",
+    description: "Broader engineering and industry movement",
+    fallback: [
+      { title: "Edge-network optimization is increasingly table stakes for Sub-Saharan African SaaS latency targets.", source: "CloudGrid Africa" },
+      { title: "API-first architecture continues displacing monolith rebuilds across mid-market SaaS.", source: "Industry Trend" },
+      { title: "M-Pesa Daraja API usage among Kenyan mid-market platforms remains the dominant local payment rail.", source: "CloudGrid Africa" },
+    ],
+  },
+  {
+    id: "africa",
+    label: "Africa",
+    description: "Continental startup and infrastructure signal",
+    fallback: [
+      { title: "East African fintech infrastructure investment continues to concentrate around Nairobi and Lagos corridors.", source: "Industry Trend" },
+      { title: "Data localization requirements are tightening across multiple African data-protection jurisdictions.", source: "Regional Trend" },
+      { title: "Enterprise cloud adoption in East Africa is shifting from cost-driven to compliance-driven decision making.", source: "CloudGrid Africa" },
+    ],
+  },
+];
+---
+
+<section id="tech-intel" class="py-24 sm:py-32">
+  <div class="cga-container">
+    <div class="mb-14 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+      <div>
+        <p class="cga-eyebrow">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-emerald"></span>
+          </span>
+          Tech Intelligence Hub
+        </p>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          What we're watching, updated daily.
+        </h2>
+      </div>
+      <p class="max-w-xs text-[13px] leading-relaxed text-ink-muted">
+        Curated by CloudGrid's engineering team, refreshed from source feeds. Falls back to
+        static coverage if the live feed is unreachable.
+      </p>
+    </div>
+
+    <div class="cga-card overflow-hidden" data-intel-hub>
+      <!-- Tab bar — activated by JS; stays hidden until the script confirms
+           it can drive it, so visitors never see an inert row of buttons. -->
+      <div role="tablist" aria-label="Intelligence category" class="hidden overflow-x-auto border-b border-midnight-border" data-intel-tabbar>
+        {
+          categories.map((cat, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-btn-${cat.id}`}
+              aria-controls={`tab-panel-${cat.id}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              data-intel-tab={cat.id}
+              class="whitespace-nowrap border-b-2 border-transparent px-5 py-3.5 font-mono text-[12.5px] font-medium uppercase tracking-wide text-ink-muted transition-colors duration-200 hover:text-ink-primary aria-selected:border-signal-blue aria-selected:text-white"
+            >
+              {cat.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Static-first content: every category visible by default, no JS required -->
+      <div data-intel-panels>
+        {
+          categories.map((cat) => (
+            <div
+              id={`tab-panel-${cat.id}`}
+              role="tabpanel"
+              aria-labelledby={`tab-btn-${cat.id}`}
+              data-intel-panel={cat.id}
+              class="border-b border-midnight-border p-2 last:border-b-0"
+            >
+              <p class="px-4 pt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+                {cat.label} · {cat.description}
+              </p>
+              <ul class="divide-y divide-midnight-border" data-feed-list={cat.id}>
+                {cat.fallback.map((item) => (
+                  <li class="flex items-start justify-between gap-4 px-4 py-3.5">
+                    <span class="text-[13.5px] leading-snug text-ink-secondary">{item.title}</span>
+                    <span class="shrink-0 font-mono text-[10.5px] uppercase tracking-wide text-ink-faint">
+                      {item.source}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // Same lazy-load pattern as ChatWidget.astro's bootstrap, and for the
+  // same reason: this section sits well below the fold on first paint, so
+  // there's no reason to spend any of the initial JS budget on it. This
+  // bootstrap is tiny and identical on every page it appears on, so it
+  // contributes one more stable, non-varying hash to the CSP — not a
+  // per-page-varying one requiring special handling.
+  (function () {
+    var section = document.getElementById("tech-intel");
+    if (!section) return;
+    var loaded = false;
+    function loadHub() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement("script");
+      s.type = "module";
+      s.src = "/scripts/tech-intel-hub.js";
+      document.body.appendChild(s);
+    }
+    if (!("IntersectionObserver" in window)) {
+      loadHub(); // no observer support — fail open rather than never load it
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadHub();
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(section);
+  })();
+</script>

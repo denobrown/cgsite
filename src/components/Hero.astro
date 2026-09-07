@@ -1,0 +1,70 @@
+---
+// src/components/Hero.astro
+const clients = [
+  "PrimeDrive Imports",
+  "BIXA Medical",
+  "Miiza Realtors",
+  "Pinnoserv LTD",
+];
+---
+
+<section class="relative pt-40 pb-20 sm:pt-48 sm:pb-28">
+  <div class="cga-container flex flex-col items-center text-center">
+    <!-- Over-headline -->
+    <div class="cga-eyebrow mb-6 animate-fade-up">
+      <span class="relative flex h-1.5 w-1.5">
+        <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-blue"></span>
+      </span>
+      Engineering Africa's Digital Future
+    </div>
+
+    <!-- Main headline -->
+    <h1
+      class="max-w-4xl text-display-lg font-bold text-white sm:text-display-xl animate-fade-up [animation-delay:60ms]"
+    >
+      Cloud &amp; Cybersecurity Engineering for
+      <span class="relative whitespace-nowrap">
+        <span class="relative z-10">East African Enterprise</span>
+      </span>.
+    </h1>
+
+    <!-- Sub-headline -->
+    <p
+      class="mt-7 max-w-2xl text-balance text-base leading-relaxed text-ink-secondary sm:text-lg animate-fade-up [animation-delay:120ms]"
+    >
+      We architect resilient cloud environments, secure critical transaction pipelines, and
+      ensure strict compliance with the <span class="text-ink-primary">Kenya Data Protection Act 2019</span>.
+      Built by native engineers who understand local scale.
+    </p>
+
+    <!-- Primary CTA -->
+    <div class="mt-10 animate-fade-up [animation-delay:180ms]">
+      <a
+        href="/#contact"
+        class="group inline-flex items-center gap-2 rounded-md bg-white px-6 py-3.5 text-sm font-semibold text-midnight shadow-glow-blue transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink-primary"
+      >
+        Schedule an Engineering Consultation
+        <span class="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="mt-20 w-full max-w-3xl animate-fade-up [animation-delay:240ms]">
+      <p class="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-ink-faint">
+        Trusted by 14+ East African enterprises
+      </p>
+      <div
+        class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-y border-midnight-border py-6 font-mono text-[13px] tracking-tight text-ink-muted"
+      >
+        {
+          clients.map((client, i) => (
+            <>
+              <span class="transition-colors duration-200 hover:text-ink-primary">{client}</span>
+              {i < clients.length - 1 && <span class="text-midnight-border-strong" aria-hidden="true">•</span>}
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

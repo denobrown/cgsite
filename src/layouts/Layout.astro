@@ -1,0 +1,203 @@
+---
+// src/layouts/Layout.astro
+// Global structural shell — every page on cloudgridafrica.com renders through
+// this single component. Content-Security-Policy itself is NOT set here via
+// <meta http-equiv>; it is set as a real HTTP response header in
+// netlify.toml, which is the only place a CSP can meaningfully restrict
+// framing, forms, and connect-src. This file only declares what the CSP
+// already expects to exist: no inline scripts, no third-party font/style
+// origins, one first-party stylesheet.
+
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/jetbrains-mono/600.css";
+import "../styles/global.css";
+import ChatWidget from "../components/ChatWidget.astro";
+import PrivacyNotice from "../components/PrivacyNotice.astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from "@vercel/analytics/astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute URL to a 1200x630 social card image */
+  ogImage?: string;
+  /** Set for blog posts so canonical + article meta emit correctly */
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    author?: string;
+    tags?: string[];
+  };
+  noIndex?: boolean;
+}
+
+const {
+  title = "CloudGrid Africa — Cloud & Cybersecurity Engineering for East African Enterprise",
+  description = "CloudGrid Africa architects resilient cloud environments, secures critical transaction pipelines, and ensures strict Kenya Data Protection Act 2019 compliance for East African enterprises. Nairobi-based, native engineering.",
+  ogImage = "https://cloudgridafrica.com/og/cloudgridafrica-cover.jpg",
+  article,
+  noIndex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteName = "CloudGrid Africa";
+---
+
+<!doctype html>
+<html lang="en-KE" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href={canonicalURL} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="CloudGrid Africa — Engineering Notes"
+      href="/rss.xml"
+    />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="CloudGrid Africa" />
+    <meta name="theme-color" content="#0B0F17" />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_KE" />
+    {
+      article && (
+        <>
+          <meta property="article:published_time" content={article.publishedTime} />
+          {article.modifiedTime && (
+            <meta property="article:modified_time" content={article.modifiedTime} />
+          )}
+          {article.author && <meta property="article:author" content={article.author} />}
+          {article.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+        </>
+      )
+    }
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:site" content="@cloudgridafrica" />
+
+    <!--
+      Structured data — semantic web layer.
+      Emitted as a JSON-LD @graph (Organization + WebSite) present on every
+      page. Individual components add their own scoped JSON-LD alongside the
+      content it describes — FAQSection emits FAQPage, BentoGrid emits
+      Service entities, AboutTeam emits Person entities, and each blog post
+      emits BlogPosting + BreadcrumbList. This is deliberately colocated with
+      content rather than threaded through Layout props: Google explicitly
+      supports JSON-LD anywhere in the document, and colocating it keeps each
+      block next to the markup it's describing.
+
+      CSP note: every one of these blocks is a distinct inline
+      `<script type="application/ld+json">`, and every one of them varies
+      per page (a blog post's BlogPosting is obviously not the same JSON
+      twice). Rather than manually pinning a hash per unique block —
+      unworkable once the daily auto-publish pipeline is adding new blog
+      posts unattended — `scripts/lib/collect-inline-script-hashes.mjs` (shared by
+      both platform-specific writers) runs as part of
+      `npm run build`, scans the built `dist/` output for every inline
+      ld+json block, computes its exact SHA-256, and writes the full
+      deduplicated hash list into `dist/_headers`. Nothing here needs to
+      stay content-fixed anymore; the CSP regenerates itself correctly on
+      every build, including ones triggered by the automated blog pipeline.
+    -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://cloudgridafrica.com/#organization",
+          "name": "CloudGrid Africa",
+          "url": "https://cloudgridafrica.com",
+          "description": "Cloud and cybersecurity engineering firm based in Nairobi, Kenya, serving compliance-driven East African enterprise clients.",
+          "email": "hello@cloudgridafrica.com",
+          "telephone": "+254721656835",
+          "areaServed": { "@type": "Country", "name": "Kenya" },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Nairobi",
+            "addressRegion": "Westlands",
+            "addressCountry": "KE",
+          },
+          "knowsAbout": [
+            "Cloud Engineering",
+            "Cybersecurity",
+            "Kenya Data Protection Act 2019",
+            "ISO 27001",
+            "Penetration Testing",
+            "M-Pesa API Integration",
+          ],
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://cloudgridafrica.com/#website",
+          "url": "https://cloudgridafrica.com",
+          "name": "CloudGrid Africa",
+          "inLanguage": "en-KE",
+          "publisher": { "@id": "https://cloudgridafrica.com/#organization" },
+        },
+      ],
+    })} />
+
+    <!-- Resource hints — only origins the client scripts actually call -->
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="dns-prefetch" href="https://api.open-meteo.com" />
+  </head>
+
+  <body class="relative min-h-screen overflow-x-hidden bg-midnight font-sans text-ink-primary">
+    <!-- Ambient header glow — fixed, decorative, non-interactive -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[720px] overflow-hidden"
+    >
+      <div
+        class="absolute left-1/2 top-[-280px] h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-signal-blue/5 blur-3xl"
+      >
+      </div>
+      <div
+        class="absolute inset-0 bg-grid-fade bg-grid opacity-[0.03] [mask-image:linear-gradient(to_bottom,black,transparent)]"
+      >
+      </div>
+    </div>
+
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-signal-blue-dim focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+    >
+      Skip to content
+    </a>
+
+    <slot />
+
+    <ChatWidget />
+    <PrivacyNotice />
+    <SpeedInsights />
+    <Analytics />
+  </body>
+</html>
