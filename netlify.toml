@@ -1,0 +1,59 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Security & caching headers
+# ──────────────────────────────────────────────────────────────────────────
+# Deliberately NOT defined here anymore. The site ships several
+# per-page-varying inline structured-data blocks (BlogPosting, FAQPage,
+# Service, Person, BreadcrumbList — see scripts/lib/collect-json-ld-hashes.mjs
+# for the full rationale), which means the CSP's script-src hash list
+# changes on every build as content changes. Hand-maintaining that list in
+# this file is exactly the workflow this rebuild was designed to eliminate.
+#
+# `npm run build:netlify` runs `astro build` and then
+# `scripts/generate-headers-netlify.mjs`, which scans the built dist/
+# output and writes a complete, correct `dist/_headers` file — including
+# the CSP with the exact hash list for that build. Netlify reads `_headers`
+# from the publish directory automatically; there is nothing to configure
+# here for it to take effect.
+#
+# NOTE ON THE PLAIN `npm run build` SCRIPT: this project's default build
+# script (no suffix) now targets Vercel — see vercel.json and
+# scripts/generate-headers-vercel.mjs. Running that here instead of
+# `npm run build:netlify` would produce a dist/ with NO _headers file at
+# all, since it writes to vercel.json instead. This file's [build] command
+# above is deliberately pinned to the `:netlify` variant for that reason —
+# this config exists to keep Netlify available as a working fallback deploy
+# target, not as the project's primary one anymore.
+
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact"
+  status = 200
+
+[[redirects]]
+  from = "/api/feed"
+  to = "/.netlify/functions/feed"
+  status = 200
+
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
+[[redirects]]
+  from = "/blog/feed"
+  to = "/rss.xml"
+  status = 301
+
+# Sitemap generation is handled at build time by the @astrojs/sitemap
+# integration (astro.config.mjs) — no separate Netlify build plugin needed.

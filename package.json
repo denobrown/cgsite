@@ -1,0 +1,26 @@
+{
+  "name": "cloudgridafrica-com",
+  "type": "module",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/generate-headers-vercel.mjs",
+    "build:netlify": "astro build && node scripts/generate-headers-netlify.mjs",
+    "preview": "astro preview",
+    "sync": "astro sync"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.9",
+    "@astrojs/sitemap": "3.2.1",
+    "@astrojs/tailwind": "^5.1.2",
+    "@fontsource-variable/plus-jakarta-sans": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.1",
+    "@tailwindcss/typography": "^0.5.15",
+    "@vercel/analytics": "^1.4.1",
+    "@vercel/speed-insights": "^1.1.0",
+    "astro": "^4.16.7",
+    "tailwindcss": "^3.4.13",
+    "parse5": "^8.0.1"
+  }
+}
