@@ -103,6 +103,22 @@ export const BASE_DIRECTIVES = {
   "img-src": ["'self'", "data:", "https:"],
   "font-src": ["'self'"],
   "connect-src": ["'self'", "https://api.open-meteo.com"],
+  // Calendly's inline booking widget — the "Get in touch" section embeds
+  // it directly (https://calendly.com/dmurila) rather than linking out, so
+  // the visitor can actually book without leaving the site. This needs two
+  // real CSP allowances, documented rather than silently added:
+  //   1. script-src: assets.calendly.com serves the widget's loader script
+  //      as a fixed, known URL — allowed by exact origin, same as any
+  //      external <script src>, not by hash (hashes are only for INLINE
+  //      script content, which this isn't).
+  //   2. frame-src: the widget renders the actual booking calendar inside
+  //      an iframe pointing at calendly.com. Without an explicit frame-src,
+  //      default-src 'self' blocks that iframe outright.
+  // Nothing else changes: the iframe's own network requests happen inside
+  // Calendly's document, governed by THEIR CSP, not this site's
+  // connect-src — so no connect-src change is needed for the embed to work.
+  "script-src-extra": ["https://assets.calendly.com"],
+  "frame-src": ["https://calendly.com"],
   "form-action": ["'self'"],
   "frame-ancestors": ["'none'"],
   "base-uri": ["'none'"],
@@ -110,9 +126,11 @@ export const BASE_DIRECTIVES = {
 };
 
 export function buildCspString(inlineScriptHashes) {
-  const scriptSrc = ["'self'", ...inlineScriptHashes.map((h) => `'${h}'`)];
+  const extraScriptSrc = BASE_DIRECTIVES["script-src-extra"] || [];
+  const scriptSrc = ["'self'", ...extraScriptSrc, ...inlineScriptHashes.map((h) => `'${h}'`)];
   const lines = [`script-src ${scriptSrc.join(" ")}`];
   for (const [directive, sources] of Object.entries(BASE_DIRECTIVES)) {
+    if (directive === "script-src-extra") continue; // folded into script-src above, not its own directive
     lines.push(`${directive} ${sources.join(" ")}`);
   }
   lines.push("upgrade-insecure-requests");

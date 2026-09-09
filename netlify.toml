@@ -36,11 +36,6 @@
 # target, not as the project's primary one anymore.
 
 [[redirects]]
-  from = "/api/contact"
-  to = "/.netlify/functions/contact"
-  status = 200
-
-[[redirects]]
   from = "/api/feed"
   to = "/.netlify/functions/feed"
   status = 200

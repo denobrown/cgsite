@@ -44,38 +44,38 @@ const buildTimeNairobi = new Intl.DateTimeFormat("en-KE", {
   class="border-y border-midnight-border bg-midnight-surface/40"
 >
   <div class="cga-container">
-    <div class="grid grid-cols-1 divide-y divide-midnight-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+    <div class="grid grid-cols-1 items-stretch divide-y divide-midnight-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
       <!-- Local time -->
-      <div class="flex items-center gap-3 py-4 sm:justify-center sm:py-5">
-        <span class="relative flex h-1.5 w-1.5 shrink-0">
+      <div class="flex items-start gap-3 px-1 py-5">
+        <span class="relative mt-1.5 flex h-1.5 w-1.5 shrink-0">
           <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-emerald"></span>
         </span>
         <div class="font-mono">
           <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Nairobi — Local Time</p>
-          <p class="mt-0.5 text-[15px] tabular-nums text-ink-primary" data-live="time" data-fallback={buildTimeNairobi}>
+          <p class="mt-1.5 text-[15px] tabular-nums text-ink-primary" data-live="time" data-fallback={buildTimeNairobi}>
             {buildTimeNairobi} <span class="text-ink-muted">EAT</span>
           </p>
         </div>
       </div>
 
       <!-- Weather -->
-      <div class="flex items-center gap-3 py-4 sm:justify-center sm:py-5">
-        <span class="relative flex h-1.5 w-1.5 shrink-0">
+      <div class="flex items-start gap-3 px-1 py-5 sm:px-6">
+        <span class="relative mt-1.5 flex h-1.5 w-1.5 shrink-0">
           <span class="inline-flex h-full w-full rounded-full bg-signal-blue"></span>
         </span>
         <div class="font-mono">
           <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Nairobi — Conditions</p>
-          <p class="mt-0.5 text-[15px] text-ink-primary" data-live="weather" data-fallback="—">
+          <p class="mt-1.5 text-[15px] text-ink-primary" data-live="weather" data-fallback="—">
             Reading sensor feed<span class="animate-pulse">…</span>
           </p>
         </div>
       </div>
 
       <!-- Security tip of the day -->
-      <div class="flex items-start gap-3 py-4 sm:py-5">
+      <div class="flex items-start gap-3 px-1 py-5 sm:px-6">
         <span
           class:list={[
-            "mt-[3px] shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider",
+            "mt-1.5 shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider",
             levelStyles[todaysTip.level],
           ]}
         >
@@ -83,7 +83,7 @@ const buildTimeNairobi = new Intl.DateTimeFormat("en-KE", {
         </span>
         <div>
           <p class="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Security Tip of the Day</p>
-          <p class="mt-0.5 max-w-md text-[13px] leading-snug text-ink-secondary">
+          <p class="mt-1.5 max-w-md text-[13px] leading-snug text-ink-secondary">
             {todaysTip.tip}
           </p>
         </div>

@@ -19,8 +19,17 @@ export default {
         // operational/secure, amber = advisory (used only inside the
         // Security Tip rotator for elevated-priority tips).
         signal: {
-          blue: "#3B82F6",
-          "blue-dim": "#1D4ED8",
+          // Real CloudGrid Africa brand blue, sampled directly from the
+          // actual logo file's pixels (#155DBA — not an approximation).
+          // Used for solid fills (buttons, the logo itself) where it
+          // already passes AA with white text (6.35:1) at its true value.
+          "blue-dim": "#155DBA",
+          // The same brand hue, lightened just enough to clear 4.5:1 as
+          // TEXT against both the page canvas and card surfaces — the
+          // true brand blue only hits 3.02:1 as small text on midnight,
+          // which fails AA. This is used for links, icons, and accent
+          // text; `blue-dim` above is used for solid-fill contexts.
+          blue: "#3181E8",
           emerald: "#10B981",
           "emerald-dim": "#065F46",
           amber: "#F59E0B",

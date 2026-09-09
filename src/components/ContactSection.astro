@@ -1,24 +1,34 @@
 ---
 // src/components/ContactSection.astro
 //
-// Vercel port: Netlify Forms (data-netlify="true") has no equivalent on
-// Vercel, so this now posts to api/contact.js — a Vercel Edge Function that
-// sends the message via Resend. Deliberately kept as a PLAIN HTML FORM POST
-// with no client-side fetch/JS at all, preserving the same
-// zero-unnecessary-JS posture the Netlify Forms version had. See
-// api/contact.js for the required RESEND_API_KEY and the honest-failure
-// behavior if it's unset.
+// Replaces the email-form version with a real, embedded Calendly booking
+// flow — https://calendly.com/dmurila — so a visitor can actually book a
+// slot without leaving the site or waiting on an email reply.
 //
-// The honeypot field is hidden off-screen (absolute positioning + zero
-// size) rather than via display:none — display:none fields are the first
-// thing unsophisticated form-spam bots learn to skip, so an off-screen
-// positioned field that's still "visible" to a naive DOM-filling bot is a
-// more effective trap.
+// CSP: this needed two real, documented allowances (assets.calendly.com in
+// script-src, calendly.com in frame-src) — see
+// scripts/lib/collect-inline-script-hashes.mjs for exactly why each one is
+// there. Nothing else about the CSP changed.
+//
+// Colors: Calendly's free embed customization accepts background_color /
+// text_color / primary_color as URL params on the widget's data-url — used
+// here to match this site's exact palette (midnight canvas, ink-primary
+// text, the real CloudGrid brand blue) instead of showing Calendly's
+// default white panel, which would otherwise be a jarring, obviously
+// third-party-feeling box dropped into an otherwise dark page.
+//
+// Loading: the widget script is lazy-loaded on scroll-into-view, same
+// IntersectionObserver bootstrap pattern as TechIntelHub — this section
+// sits well below the fold, so there's no reason to load Calendly's script
+// for a visitor who never scrolls this far.
+
+const CALENDLY_URL =
+  "https://calendly.com/dmurila?background_color=0b0f17&text_color=e2e8f0&primary_color=155dba";
 ---
 
 <section id="contact" class="py-24 sm:py-32">
   <div class="cga-container">
-    <div class="mx-auto grid max-w-4xl grid-cols-1 gap-14 lg:grid-cols-2 lg:items-start">
+    <div class="mx-auto grid max-w-5xl grid-cols-1 gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div>
         <p class="cga-eyebrow">Get in touch</p>
         <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -26,66 +36,71 @@
         </h2>
         <p class="mt-5 max-w-sm text-[14.5px] leading-relaxed text-ink-secondary">
           Tell us what you're running and where it hurts. A principal engineer — not a sales
-          rep — replies within one business day.
+          rep — picks the call directly.
+        </p>
+        <p class="mt-6 flex items-center gap-2 font-mono text-[12.5px] text-ink-muted">
+          <span class="h-1.5 w-1.5 rounded-full bg-signal-emerald"></span>
+          Or reach us directly:
+          <a href="mailto:hello@cloudgridafrica.com" class="text-signal-blue hover:underline">hello@cloudgridafrica.com</a>
         </p>
       </div>
 
-      <form
-        name="consultation-request"
-        method="POST"
-        action="/api/contact"
-        class="cga-card space-y-5 p-7"
-      >
-        <div class="absolute left-[-9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
-          <label>
-            Leave this field blank
-            <input name="company-website" tabindex="-1" autocomplete="off" />
-          </label>
-        </div>
-
-        <div>
-          <label for="name" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">Name</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            class="w-full rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
-            placeholder="Jane Wanjiru"
-          />
-        </div>
-
-        <div>
-          <label for="email" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">Work email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            class="w-full rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
-            placeholder="jane@company.co.ke"
-          />
-        </div>
-
-        <div>
-          <label for="message" class="mb-1.5 block text-[13px] font-medium text-ink-secondary">What are you looking to solve?</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="4"
-            required
-            class="w-full resize-none rounded-md border border-midnight-border bg-midnight-raised px-3.5 py-2.5 text-[14px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
-            placeholder="Cloud migration, pentest, DPA compliance, custom application..."
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          class="w-full rounded-md bg-white px-4 py-3 text-[14px] font-semibold text-midnight transition-colors duration-200 hover:bg-ink-primary"
+      <div class="cga-card overflow-hidden p-2" data-calendly-container>
+        <div
+          class="calendly-inline-widget"
+          data-url={CALENDLY_URL}
+          data-calendly-widget
+          style="min-width:280px; height:650px;"
         >
-          Send Request
-        </button>
-      </form>
+        </div>
+        <!-- Static fallback, visible until the widget loads (or if JS never runs) -->
+        <div class="p-6 text-center" data-calendly-fallback>
+          <p class="text-[13.5px] text-ink-secondary">
+            Loading the booking calendar — if it doesn't appear,
+            <a href="https://calendly.com/dmurila" target="_blank" rel="noopener noreferrer" class="text-signal-blue hover:underline">
+              open it directly
+            </a>.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    var container = document.querySelector("[data-calendly-container]");
+    if (!container) return;
+    var loaded = false;
+
+    function loadCalendly() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement("script");
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      s.onload = function () {
+        var fallback = container.querySelector("[data-calendly-fallback]");
+        if (fallback) fallback.style.display = "none";
+      };
+      document.body.appendChild(s);
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      loadCalendly();
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadCalendly();
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: "400px" }
+    );
+    observer.observe(container);
+  })();
+</script>

@@ -18,7 +18,7 @@
 
   body {
     @apply bg-midnight text-ink-primary antialiased font-sans;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-feature-settings: "kern" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -55,6 +55,22 @@
   html {
     scrollbar-width: thin;
     scrollbar-color: #1e2635 #0b0f17;
+  }
+
+  /* Disable ligatures anywhere monospace/code text appears. JetBrains
+     Mono — like most coding fonts — merges sequences like "===", "!=",
+     and "->" into single glyphs (e.g. "===" becomes "≡") when contextual
+     ligatures are enabled. That's a nice touch in a code editor; on a
+     marketing site showing a *sample* of real code, it silently rewrites
+     what the visitor is actually reading. Every code/mono context on this
+     site is meant to show literal, copy-pasteable syntax, so ligatures
+     are switched off everywhere .font-mono is used, not just in the one
+     place this was first noticed. */
+  code,
+  pre,
+  .font-mono {
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
