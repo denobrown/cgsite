@@ -20,10 +20,10 @@ const pillars = [
 
 const team = [
   {
-    name: "Alvin Chirchir",
-    role: "Founder & Principal Cloud Architect",
-    focus: "Core Infrastructure & Virtualization",
-    initials: "AC",
+    name: "Denis Murila",
+    role: "Founder & Solutions Architect",
+    focus: "AWS/Azure Cloud Architecture & Offensive Security Research",
+    initials: "DM",
   },
   {
     name: "Brian Osoro",
@@ -70,8 +70,12 @@ const team = [
       {
         team.map((member) => (
           <article class="cga-card flex items-start gap-5 p-7">
+            {/* text-ink-secondary, not ink-muted: this avatar's gradient
+                touches midnight-raised at one edge, where ink-muted only
+                clears 4.38:1 (fails AA for text this size). ink-secondary
+                clears it at 5.83:1. */}
             <div
-              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-midnight-border bg-gradient-to-br from-midnight-raised to-midnight-surface font-mono text-[13px] font-semibold text-ink-muted"
+              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-midnight-border bg-gradient-to-br from-midnight-raised to-midnight-surface font-mono text-[13px] font-semibold text-ink-secondary"
               aria-hidden="true"
             >
               {member.initials}

@@ -62,12 +62,15 @@
     </div>
 
     <form id="cga-chat-form" class="flex items-center gap-2 border-t border-midnight-border p-3">
+      <!-- placeholder:text-ink-secondary, not ink-faint: this field's
+           background is midnight-raised, where ink-faint only clears
+           4.34:1 (fails AA). ink-secondary clears it at 5.83:1. -->
       <input
         id="cga-chat-input"
         type="text"
         autocomplete="off"
         placeholder="Ask a question…"
-        class="flex-1 rounded-md border border-midnight-border bg-midnight-raised px-3 py-2 text-[13px] text-ink-primary placeholder:text-ink-faint focus:border-signal-blue"
+        class="flex-1 rounded-md border border-midnight-border bg-midnight-raised px-3 py-2 text-[13px] text-ink-primary placeholder:text-ink-secondary focus:border-signal-blue"
       />
       <button
         type="submit"

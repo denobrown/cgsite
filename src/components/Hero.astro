@@ -2,7 +2,7 @@
 // src/components/Hero.astro
 const clients = [
   "PrimeDrive Imports",
-  "BIXA Medical",
+  "BXA Medical",
   "Capitol Realtors",
   "Pinnoserv LTD",
 ];
@@ -53,15 +53,27 @@ const clients = [
       <p class="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-ink-faint">
         Trusted by 14+ East African enterprises
       </p>
-      <div
-        class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-y border-midnight-border py-6 font-mono text-[13px] tracking-tight text-ink-muted"
-      >
+      <!-- Fixed 2-column grid (not flex-wrap) so both rows share the same
+           column tracks at every viewport width. The previous version used
+           flex-wrap + justify-center with inline "•" separators, which
+           centers each WRAPPED LINE independently based on that line's own
+           content width — since row 1 and row 2 have different total
+           widths, row 2 visibly shifted relative to row 1. A grid doesn't
+           have this failure mode: columns are shared, not re-centered per
+           row. The divider is a border on the right-hand column instead of
+           an inline dot, since inline separators between grid cells can't
+           cleanly indicate "start of a new row" vs "next item" once the
+           layout wraps to more than one row. -->
+      <div class="grid grid-cols-2 gap-x-6 gap-y-4 border-y border-midnight-border py-6 font-mono text-[13px] tracking-tight text-ink-muted sm:gap-x-10">
         {
           clients.map((client, i) => (
-            <>
-              <span class="transition-colors duration-200 hover:text-ink-primary">{client}</span>
-              {i < clients.length - 1 && <span class="text-midnight-border-strong" aria-hidden="true">•</span>}
-            </>
+            <span
+              class={`text-center transition-colors duration-200 hover:text-ink-primary ${
+                i % 2 === 1 ? "border-l border-midnight-border-strong" : ""
+              }`}
+            >
+              {client}
+            </span>
           ))
         }
       </div>
