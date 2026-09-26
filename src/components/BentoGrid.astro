@@ -1,27 +1,27 @@
 ---
 // src/components/BentoGrid.astro
-const codeLines = [
-  { n: 1, code: `POST /v1/reconcile/mpesa-callback`, tone: "fn" },
-  { n: 2, code: `  x-cga-signature: verified ✓`, tone: "comment" },
-  { n: 3, code: `` , tone: "blank" },
-  { n: 4, code: `const tx = await ledger.match({`, tone: "fn" },
-  { n: 5, code: `  checkoutRequestId: body.CheckoutRequestID,`, tone: "key" },
-  { n: 6, code: `  amount: body.Amount,`, tone: "key" },
-  { n: 7, code: `  idempotencyKey: body.MpesaReceiptNumber,`, tone: "key" },
-  { n: 8, code: `});`, tone: "fn" },
-  { n: 9, code: `` , tone: "blank" },
-  { n: 10, code: `return tx.status === "matched"`, tone: "control" },
-  { n: 11, code: `  ? ledger.settle(tx.id)  // 200 OK`, tone: "comment" },
-  { n: 12, code: `  : ledger.flag(tx.id);  // manual review`, tone: "comment" },
+// What happens to one M-Pesa payment, in order. Replaces a simulated code
+// sample that didn't match Daraja's real callback shape (unsigned request,
+// fields nested under Body.stkCallback). Each step describes standard
+// Daraja behaviour, so there's nothing a developer can catch out.
+const paymentSteps = [
+  {
+    title: "Customer approves the prompt",
+    text: "An STK Push request puts the payment prompt on the customer's phone.",
+  },
+  {
+    title: "Safaricom posts the result",
+    text: "The callback endpoint only accepts requests from Safaricom's IP addresses. Daraja callbacks aren't signed, so the network rule does that job.",
+  },
+  {
+    title: "Matched once, and only once",
+    text: "The result is tied to its order by CheckoutRequestID. The M-Pesa receipt number is stored uniquely, so a repeated callback can't credit an order twice.",
+  },
+  {
+    title: "Nothing left unexplained",
+    text: "If a callback never arrives, the STK Push Query API confirms the outcome. Anything still unmatched goes to a person for review.",
+  },
 ];
-
-const toneClass: Record<string, string> = {
-  fn: "text-signal-blue",
-  key: "text-ink-primary",
-  control: "text-signal-emerald",
-  comment: "text-ink-faint",
-  blank: "",
-};
 
 // Semantic web: each Bento quadrant is also a real Service offering — this
 // is the actual list of things CloudGrid sells, so it's the natural place
@@ -149,23 +149,30 @@ const services = [
           </div>
         </div>
 
-        <!-- Simulated code block -->
-        <div class="relative overflow-hidden rounded-lg border border-midnight-border bg-[#0A0D13]">
-          <div class="flex items-center gap-1.5 border-b border-midnight-border px-3.5 py-2.5">
-            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
-            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
-            <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
-            <span class="ml-2 font-mono text-[11px] text-ink-faint">reconcile.route.ts</span>
-          </div>
-          <pre class="whitespace-pre-wrap px-4 py-4 font-mono text-[11px] leading-[1.7] [overflow-wrap:anywhere] sm:text-[12px] sm:leading-[1.75]"><code>{codeLines.map((line) => (
-            <span class="grid grid-cols-[1.5rem_1fr]">
-              <span class="select-none text-ink-faint/60">{line.n || ""}</span>
-              <span class={`min-w-0 ${toneClass[line.tone]}`}>{line.code}</span>
-            </span>
-          ))}</code></pre>
-          <!-- Lines wrap instead of scrolling horizontally: on phones the old
-               overflow-x + right-edge fade clipped identifiers mid-word
-               (e.g. "CheckoutReques"), which read as a rendering bug. -->
+        <!-- Payment flow: a real sequence, so numbered steps are earned -->
+        <div class="-mx-2 rounded-lg border border-midnight-border bg-midnight p-5 sm:mx-0 sm:p-6">
+          <p class="text-sm text-ink-muted">How one M-Pesa payment is handled</p>
+          <ol class="mt-5 space-y-5">
+            {
+              paymentSteps.map((step, i) => (
+                <li class="relative grid grid-cols-[1.75rem_1fr] gap-3">
+                  {i < paymentSteps.length - 1 && (
+                    <span
+                      class="absolute left-[0.8125rem] top-7 h-[calc(100%-0.25rem)] w-px bg-midnight-border-strong"
+                      aria-hidden="true"
+                    ></span>
+                  )}
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full border border-midnight-border-strong text-[13px] font-medium text-signal-blue" data-figure>
+                    {i + 1}
+                  </span>
+                  <div class="pt-0.5">
+                    <p class="text-[15px] font-medium text-white">{step.title}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-ink-secondary">{step.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
         </div>
       </article>
     </div>

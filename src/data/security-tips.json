@@ -1,6 +1,6 @@
 [
   { "id": 1, "level": "info", "tip": "Kenya DPA 2019 §25 requires a documented lawful basis before processing any personal data — 'we've always done it this way' is not one of the six recognised grounds.", "tag": "Kenya DPA" },
-  { "id": 2, "level": "advisory", "tip": "M-Pesa Daraja callback URLs must validate the request signature server-side. Never trust a callback payload just because it arrived on the whitelisted endpoint.", "tag": "M-Pesa API" },
+  { "id": 2, "level": "advisory", "tip": "M-Pesa Daraja callbacks are not signed. Restrict the callback URL to Safaricom's IP addresses, and confirm the result with the STK Push Query API before releasing goods or services.", "tag": "M-Pesa API" },
   { "id": 3, "level": "info", "tip": "CBK's cloud computing guidance expects a documented exit strategy from every cloud provider before go-live — not after a contract dispute.", "tag": "CBK Guidance" },
   { "id": 4, "level": "advisory", "tip": "ISO 27001 Annex A 8.24 (cryptography) is where most Kenyan SME audits fail first: encryption keys stored beside the data they protect.", "tag": "ISO 27001" },
   { "id": 5, "level": "info", "tip": "PCI-DSS Requirement 4.2 now mandates TLS 1.2 minimum for any network carrying cardholder data — TLS 1.0/1.1 fallback should be disabled at the load balancer, not the app.", "tag": "PCI-DSS" },
