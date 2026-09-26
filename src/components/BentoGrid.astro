@@ -35,7 +35,7 @@ const services = [
     serviceType: "Cloud Infrastructure Engineering",
   },
   {
-    name: "Advanced Cybersecurity",
+    name: "Cybersecurity",
     description: "Comprehensive penetration testing, OWASP hardening, and 24/7 proactive SOC monitoring.",
     serviceType: "Cybersecurity Services",
   },
@@ -45,18 +45,18 @@ const services = [
     serviceType: "Data Protection Compliance",
   },
   {
-    name: "Custom Enterprise Applications",
+    name: "Custom enterprise applications",
     description: "Bespoke transaction architectures, paperless automation systems, and high-performance M-Pesa API integrations.",
     serviceType: "Custom Software Development",
   },
 ];
 ---
 
-<section id="capabilities" class="py-24 sm:py-32">
+<section id="capabilities" class="py-20 sm:py-28">
   <div class="cga-container">
-    <div class="mx-auto mb-14 max-w-2xl text-center">
-      <p class="cga-eyebrow justify-center">Capabilities</p>
-      <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+    <div class="cga-section-head">
+      <p class="cga-eyebrow">Capabilities</p>
+      <h2 class="cga-section-title">
         Four disciplines. One engineering standard.
       </h2>
     </div>
@@ -65,38 +65,45 @@ const services = [
       <!-- Q1 — Cloud Engineering & Infrastructure (large) -->
       <article class="cga-card group flex flex-col justify-between overflow-hidden p-8 lg:col-span-8 lg:row-span-1">
         <div>
-          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+          <div class="mb-5 flex h-5 w-5 items-center">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.5 12.5a3 3 0 0 1 0-6 3.75 3.75 0 0 1 7.24-1.14A2.75 2.75 0 0 1 12.25 12.5H5.5Z" stroke="#3181E8" stroke-width="1.2" stroke-linejoin="round" />
+              <path d="M5.5 12.5a3 3 0 0 1 0-6 3.75 3.75 0 0 1 7.24-1.14A2.75 2.75 0 0 1 12.25 12.5H5.5Z" stroke="#3A8AF1" stroke-width="1.5" stroke-linejoin="round" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white">Cloud Engineering &amp; Infrastructure</h3>
-          <p class="mt-2.5 max-w-md text-[14.5px] leading-relaxed text-ink-secondary">
+          <h3 class="text-xl font-semibold text-white">Cloud engineering and infrastructure</h3>
+          <p class="mt-2.5 max-w-md text-[15px] leading-relaxed text-ink-secondary">
             Architecting, migrating, and optimizing hybrid workloads across AWS and Azure.
           </p>
+          <ul class="mt-6 grid gap-x-8 gap-y-2 text-[15px] text-ink-primary sm:grid-cols-2">
+            <li>Migrations and landing zones</li>
+            <li>Backup and disaster recovery</li>
+            <li>Hybrid with on-prem at Raxio</li>
+            <li>Cost and performance tuning</li>
+          </ul>
         </div>
         <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
           <span class="font-mono text-2xl font-semibold text-signal-blue">40%</span>
-          <span class="text-[13px] text-ink-muted">Average Downtime Reduction</span>
+          <span class="text-[13px] text-ink-muted">average reduction in downtime</span>
         </div>
       </article>
 
-      <!-- Q2 — Advanced Cybersecurity (small) -->
+      <!-- Q2 — Cybersecurity (small) -->
       <article class="cga-card group flex flex-col justify-between p-8 lg:col-span-4 lg:row-span-1">
         <div>
-          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+          <div class="mb-5 flex h-5 w-5 items-center">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 2.5 14.5 4.5v4c0 3.4-2.3 6.1-5.5 7-3.2-.9-5.5-3.6-5.5-7v-4L9 2.5Z" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round" />
+              <path d="M9 2.5 14.5 4.5v4c0 3.4-2.3 6.1-5.5 7-3.2-.9-5.5-3.6-5.5-7v-4L9 2.5Z" stroke="#3A8AF1" stroke-width="1.5" stroke-linejoin="round" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white">Advanced Cybersecurity</h3>
-          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+          <h3 class="text-xl font-semibold text-white">Cybersecurity</h3>
+          <p class="mt-2.5 text-[15px] leading-relaxed text-ink-secondary">
             Comprehensive penetration testing, OWASP hardening, and 24/7 proactive SOC monitoring.
           </p>
         </div>
         <div class="mt-8 border-t border-midnight-border pt-5">
-          <span class="inline-flex items-center gap-1.5 rounded-md bg-signal-emerald px-2.5 py-1 font-mono text-[12.5px] font-semibold text-midnight">
-            24/7 SOC Monitoring
+          <span class="inline-flex items-center gap-2 text-sm text-ink-secondary">
+            <span class="h-1.5 w-1.5 rounded-full bg-signal-emerald" aria-hidden="true"></span>
+            24/7 SOC monitoring
           </span>
         </div>
       </article>
@@ -104,40 +111,41 @@ const services = [
       <!-- Q3 — Data Protection & Privacy (small) -->
       <article class="cga-card group flex flex-col justify-between p-8 lg:col-span-4 lg:row-span-1">
         <div>
-          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+          <div class="mb-5 flex h-5 w-5 items-center">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="8" width="10" height="7" rx="1.5" stroke="#3181E8" stroke-width="1.2" />
-              <path d="M6.5 8V5.5a2.5 2.5 0 0 1 5 0V8" stroke="#3181E8" stroke-width="1.2" />
+              <rect x="4" y="8" width="10" height="7" rx="1.5" stroke="#3A8AF1" stroke-width="1.5" />
+              <path d="M6.5 8V5.5a2.5 2.5 0 0 1 5 0V8" stroke="#3A8AF1" stroke-width="1.5" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white">Data Protection &amp; Privacy</h3>
-          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+          <h3 class="text-xl font-semibold text-white">Data protection and privacy</h3>
+          <p class="mt-2.5 text-[15px] leading-relaxed text-ink-secondary">
             Full structural alignment and compliance deployment for the Kenya Data Protection Act 2019.
           </p>
         </div>
         <div class="mt-8 border-t border-midnight-border pt-5">
-          <span class="inline-flex items-center gap-1.5 rounded-md bg-signal-blue-dim px-2.5 py-1 font-mono text-[12.5px] font-semibold text-white">
-            DPA 2019 + ISO 27001 Alignment
+          <span class="inline-flex items-center gap-2 text-sm text-ink-secondary">
+            <span class="h-1.5 w-1.5 rounded-full bg-signal-blue" aria-hidden="true"></span>
+            Kenya DPA 2019 and ISO 27001 aligned
           </span>
         </div>
       </article>
 
-      <!-- Q4 — Custom Enterprise Applications (large, with code snippet) -->
-      <article class="cga-card group grid grid-cols-1 gap-6 overflow-hidden p-8 lg:col-span-8 lg:row-span-1 lg:grid-cols-2 lg:items-center">
+      <!-- Q4 — Custom enterprise applications (large, with code snippet) -->
+      <article class="cga-card group grid grid-cols-1 gap-6 overflow-hidden p-8 lg:col-span-8 lg:row-span-1 lg:grid-cols-[1fr_1.4fr] lg:items-center">
         <div>
-          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg border border-midnight-border bg-midnight-raised">
+          <div class="mb-5 flex h-5 w-5 items-center">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 5 3 9l3 4M12 5l3 4-3 4M10.5 3.5 7.5 14.5" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6 5 3 9l3 4M12 5l3 4-3 4M10.5 3.5 7.5 14.5" stroke="#3A8AF1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white">Custom Enterprise Applications</h3>
-          <p class="mt-2.5 text-[14.5px] leading-relaxed text-ink-secondary">
+          <h3 class="text-xl font-semibold text-white">Custom enterprise applications</h3>
+          <p class="mt-2.5 text-[15px] leading-relaxed text-ink-secondary">
             Bespoke transaction architectures, paperless automation systems, and high-performance
             M-Pesa API integrations.
           </p>
           <div class="mt-8 flex items-baseline gap-2 border-t border-midnight-border pt-5">
-            <span class="font-mono text-2xl font-semibold text-signal-emerald">KES 18M+</span>
-            <span class="text-[13px] text-ink-muted">Secured &amp; Processed</span>
+            <span class="whitespace-nowrap font-mono text-2xl font-semibold text-signal-blue">KES 18M+</span>
+            <span class="text-[13px] text-ink-muted">processed</span>
           </div>
         </div>
 
@@ -149,21 +157,15 @@ const services = [
             <span class="h-2.5 w-2.5 rounded-full bg-[#2A3345]"></span>
             <span class="ml-2 font-mono text-[11px] text-ink-faint">reconcile.route.ts</span>
           </div>
-          <pre class="overflow-x-auto px-4 py-4 font-mono text-[12px] leading-[1.75]"><code>{codeLines.map((line) => (
+          <pre class="whitespace-pre-wrap px-4 py-4 font-mono text-[11px] leading-[1.7] [overflow-wrap:anywhere] sm:text-[12px] sm:leading-[1.75]"><code>{codeLines.map((line) => (
             <span class="grid grid-cols-[1.5rem_1fr]">
               <span class="select-none text-ink-faint/60">{line.n || ""}</span>
-              <span class={toneClass[line.tone]}>{line.code}</span>
+              <span class={`min-w-0 ${toneClass[line.tone]}`}>{line.code}</span>
             </span>
           ))}</code></pre>
-          <!-- Right-edge fade: signals there's more to scroll to, rather
-               than an abrupt hard cutoff at the container's edge. Purely
-               decorative (pointer-events-none), doesn't interfere with
-               the actual horizontal scroll or text selection underneath. -->
-          <div
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#0A0D13] to-transparent"
-          >
-          </div>
+          <!-- Lines wrap instead of scrolling horizontally: on phones the old
+               overflow-x + right-edge fade clipped identifiers mid-word
+               (e.g. "CheckoutReques"), which read as a rendering bug. -->
         </div>
       </article>
     </div>

@@ -24,20 +24,21 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class="py-24 sm:py-32">
+<section id="faq" class="py-20 sm:py-28">
   <div class="cga-container">
-    <div class="mx-auto mb-14 max-w-2xl text-center">
-      <p class="cga-eyebrow justify-center">FAQ</p>
-      <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
+    <div class="cga-section-head lg:col-span-4 lg:mb-0">
+      <p class="cga-eyebrow">Common questions</p>
+      <h2 class="cga-section-title">
         Questions we hear before every engagement.
       </h2>
     </div>
 
-    <div class="mx-auto max-w-2xl divide-y divide-midnight-border border-y border-midnight-border">
+    <div class="lg:col-span-8 divide-y divide-midnight-border border-y border-midnight-border">
       {
         faqs.map((item, i) => (
           <details class="group py-5" open={i === 0}>
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-white marker:content-none">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 min-h-[44px] text-base font-medium text-white marker:content-none">
               {item.q}
               <span
                 class="shrink-0 text-ink-muted transition-transform duration-200 group-open:rotate-45"
@@ -46,10 +47,11 @@ const faqs = [
                 +
               </span>
             </summary>
-            <p class="mt-3 pr-8 text-[14px] leading-relaxed text-ink-secondary">{item.a}</p>
+            <p class="mt-3 max-w-[70ch] pr-8 text-[15px] leading-relaxed text-ink-secondary">{item.a}</p>
           </details>
         ))
       }
+    </div>
     </div>
   </div>
 </section>

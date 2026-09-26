@@ -22,45 +22,71 @@
 // sits well below the fold, so there's no reason to load Calendly's script
 // for a visitor who never scrolls this far.
 
-const CALENDLY_URL =
-  "https://calendly.com/dmurila?background_color=0b0f17&text_color=e2e8f0&primary_color=155dba";
+const CALENDLY_BASE = "https://calendly.com/dmurila";
+// hide_landing_page_details + hide_gdpr_banner drop the intro block and the
+// cookie banner, which is most of the dead space above the event list.
+const CALENDLY_URL = `${CALENDLY_BASE}?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0b0f17&text_color=e2e8f0&primary_color=155dba`;
 ---
 
-<section id="contact" class="py-24 sm:py-32">
+<section id="contact" class="py-20 sm:py-28">
   <div class="cga-container">
-    <div class="mx-auto grid max-w-5xl grid-cols-1 gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-      <div>
+    <div class="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-start">
+      <div class="lg:col-span-5">
         <p class="cga-eyebrow">Get in touch</p>
-        <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Schedule an engineering consultation.
+        <h2 class="cga-section-title">
+          Book an engineering consultation.
         </h2>
-        <p class="mt-5 max-w-sm text-[14.5px] leading-relaxed text-ink-secondary">
+        <p class="mt-5 max-w-md text-[15px] leading-relaxed text-ink-secondary">
           Tell us what you're running and where it hurts. A principal engineer — not a sales
           rep — picks the call directly.
         </p>
-        <p class="mt-6 flex items-center gap-2 font-mono text-[12.5px] text-ink-muted">
-          <span class="h-1.5 w-1.5 rounded-full bg-signal-emerald"></span>
-          Or reach us directly:
+        <p class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] text-ink-muted">
+          Or email
           <a href="mailto:info@cloudgridafrica.com" class="text-signal-blue hover:underline">info@cloudgridafrica.com</a>
         </p>
       </div>
 
-      <div class="cga-card overflow-hidden p-2" data-calendly-container>
-        <div
-          class="calendly-inline-widget"
-          data-url={CALENDLY_URL}
-          data-calendly-widget
-          style="min-width:280px; height:650px;"
+      <!-- Phones: a compact booking card instead of a 650px iframe. The full
+           calendar opens on calendly.com, which is a better picker on a small
+           screen anyway, and the widget script is never downloaded. -->
+      <div class="cga-card p-6 lg:hidden lg:col-span-7">
+        <p class="text-[13px] text-ink-faint">Engineering consultation</p>
+        <p class="mt-2 text-[14px] leading-relaxed text-ink-secondary">
+          Pick a slot that suits you. Times are shown in your local timezone.
+        </p>
+        <a
+          href={CALENDLY_BASE}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cga-btn-primary mt-5 w-full"
         >
-        </div>
-        <!-- Static fallback, visible until the widget loads (or if JS never runs) -->
-        <div class="p-6 text-center" data-calendly-fallback>
-          <p class="text-[13.5px] text-ink-secondary">
-            Loading the booking calendar — if it doesn't appear,
-            <a href="https://calendly.com/dmurila" target="_blank" rel="noopener noreferrer" class="text-signal-blue hover:underline">
-              open it directly
-            </a>.
-          </p>
+          Choose a time
+        </a>
+      </div>
+
+      <!-- Desktop: inline embed, only loaded at lg+ -->
+      <div class="cga-card hidden overflow-hidden p-2 lg:col-span-7 lg:block" data-calendly-container>
+        <div class="relative">
+          <div
+            class="calendly-inline-widget"
+            data-url={CALENDLY_URL}
+            data-calendly-widget
+            style="min-width:280px; height:560px;"
+          >
+          </div>
+          <!-- Loading state: a skeleton shaped like Calendly's event list,
+               removed once the iframe reports it has loaded. The link keeps
+               booking possible if the embed never arrives. -->
+          <div class="absolute inset-0 flex flex-col gap-4 p-8" data-calendly-fallback>
+            <div class="h-5 w-40 animate-pulse rounded bg-midnight-raised"></div>
+            <div class="h-4 w-64 animate-pulse rounded bg-midnight-raised"></div>
+            <div class="mt-4 h-16 animate-pulse rounded-md bg-midnight-raised"></div>
+            <div class="h-16 animate-pulse rounded-md bg-midnight-raised"></div>
+            <p class="mt-auto text-sm text-ink-muted">
+              Calendar not loading?
+              <a href={CALENDLY_BASE} target="_blank" rel="noopener noreferrer" class="text-signal-blue hover:underline">Book on calendly.com</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -71,6 +97,8 @@ const CALENDLY_URL =
   (function () {
     var container = document.querySelector("[data-calendly-container]");
     if (!container) return;
+    // Phones get the compact link card; don't pull Calendly's script at all.
+    if (window.matchMedia && !window.matchMedia("(min-width: 1024px)").matches) return;
     var loaded = false;
 
     function loadCalendly() {
@@ -79,10 +107,24 @@ const CALENDLY_URL =
       var s = document.createElement("script");
       s.src = "https://assets.calendly.com/assets/external/widget.js";
       s.async = true;
-      s.onload = function () {
-        var fallback = container.querySelector("[data-calendly-fallback]");
+      var fallback = container.querySelector("[data-calendly-fallback]");
+      var widget = container.querySelector("[data-calendly-widget]");
+      function hideFallback() {
         if (fallback) fallback.style.display = "none";
-      };
+      }
+      // Calendly injects its iframe after the script runs; hide the
+      // skeleton when that iframe finishes loading, not when the script does.
+      if (widget && "MutationObserver" in window) {
+        new MutationObserver(function (_, obs) {
+          var frame = widget.querySelector("iframe");
+          if (frame) {
+            frame.addEventListener("load", hideFallback, { once: true });
+            obs.disconnect();
+          }
+        }).observe(widget, { childList: true, subtree: true });
+      } else {
+        s.onload = hideFallback;
+      }
       document.body.appendChild(s);
     }
 

@@ -2,18 +2,18 @@
 // src/components/AboutTeam.astro
 const pillars = [
   {
-    title: "Sovereign Compliance",
+    title: "Sovereign compliance",
     detail: "Kenya DPA 2019",
     text: "Every architecture decision is checked against the Data Protection Act before it ships — not retrofitted after an ODPC inquiry.",
   },
   {
-    title: "Sub-50ms Engineering",
-    detail: "M-Pesa API / Edge",
+    title: "Sub-50 ms engineering",
+    detail: "M-Pesa API and edge",
     text: "Edge-network optimization built for Daraja callback latency and East African connectivity realities, not idealized bandwidth.",
   },
   {
-    title: "Active Governance",
-    detail: "Direct Escalation",
+    title: "Direct escalation",
+    detail: "Principal architects",
     text: "A direct line to a principal architect, not a ticket queue routed through three time zones before someone with authority reads it.",
   },
 ];
@@ -22,28 +22,30 @@ const team = [
   {
     name: "Denis Murila",
     role: "Founder & Solutions Architect",
-    focus: "AWS/Azure Cloud Architecture & Offensive Security Research",
+    focus: "AWS and Azure architecture, offensive security research",
     initials: "DM",
+    photo: undefined as string | undefined, // e.g. "/team/denis.jpg" (square, 160px+)
   },
   {
     name: "Brian Osoro",
     role: "Principal Security Engineer & Director of Compliance",
-    focus: "Advanced Penetration Testing & Data Privacy Regulations",
+    focus: "Penetration testing and data privacy regulation",
     initials: "BO",
+    photo: undefined as string | undefined, // e.g. "/team/brian.jpg"
   },
 ];
 ---
 
-<section id="team" class="py-24 sm:py-32">
+<section id="team" class="py-20 sm:py-28">
   <div class="cga-container">
     <!-- Title panel -->
     <div class="grid grid-cols-1 gap-10 border-b border-midnight-border pb-16 lg:grid-cols-2 lg:gap-20">
-      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-        Local Execution.<br />Global Standards.
+      <h2 class="cga-section-title mt-0">
+        Local execution,<br />global standards.
       </h2>
-      <p class="max-w-lg text-[15px] leading-relaxed text-ink-secondary">
-        CloudGrid Africa builds zero-latency architecture from a Nairobi engineering floor —
-        co-located at Raxio Data Centre — rather than assembling automated foreign templates
+      <p class="max-w-[60ch] text-base leading-relaxed text-ink-secondary">
+        CloudGrid Africa builds low-latency architecture from a Nairobi engineering floor,
+        co-located at Raxio Data Centre, rather than assembling automated foreign templates
         and shipping them across a continent's worth of latency. Every system we deploy is
         engineered, tested, and governed by people who operate inside the same regulatory and
         network reality our clients do.
@@ -55,11 +57,11 @@ const team = [
       {
         pillars.map((pillar) => (
           <div class="border-t border-midnight-border pt-6">
-            <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-signal-blue">
+            <p class="text-[13px] text-signal-blue">
               {pillar.detail}
             </p>
             <h3 class="mt-2 text-base font-semibold text-white">{pillar.title}</h3>
-            <p class="mt-2.5 text-[14px] leading-relaxed text-ink-secondary">{pillar.text}</p>
+            <p class="mt-2.5 text-[15px] leading-relaxed text-ink-secondary">{pillar.text}</p>
           </div>
         ))
       }
@@ -70,20 +72,28 @@ const team = [
       {
         team.map((member) => (
           <article class="cga-card flex items-start gap-5 p-7">
-            {/* text-ink-secondary, not ink-muted: this avatar's gradient
-                touches midnight-raised at one edge, where ink-muted only
-                clears 4.38:1 (fails AA for text this size). ink-secondary
-                clears it at 5.83:1. */}
-            <div
-              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-midnight-border bg-gradient-to-br from-midnight-raised to-midnight-surface font-mono text-[13px] font-semibold text-ink-secondary"
-              aria-hidden="true"
-            >
-              {member.initials}
-            </div>
+            {member.photo ? (
+              <img
+                src={member.photo}
+                alt=""
+                width="56"
+                height="56"
+                loading="lazy"
+                decoding="async"
+                class="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-midnight-border-strong"
+              />
+            ) : (
+              <div
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-midnight-raised text-sm font-semibold text-ink-secondary ring-1 ring-midnight-border-strong"
+                aria-hidden="true"
+              >
+                {member.initials}
+              </div>
+            )}
             <div>
-              <h3 class="text-[15px] font-semibold text-white">{member.name}</h3>
-              <p class="mt-1 text-[13px] font-medium text-signal-blue">{member.role}</p>
-              <p class="mt-2 text-[13px] leading-relaxed text-ink-secondary">{member.focus}</p>
+              <h3 class="text-base font-semibold text-white">{member.name}</h3>
+              <p class="mt-1 text-sm text-signal-blue">{member.role}</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-secondary">{member.focus}</p>
             </div>
           </article>
         ))

@@ -2,85 +2,73 @@
 // src/components/CaseStudies.astro
 const cases = [
   {
-    sector: "Real Estate & Financial Architecture",
+    sector: "Real estate and payments",
     client: "Capitol Realtors",
     metric: "KES 18M+",
-    metricLabel: "Processed",
-    text: "Production infrastructure overhaul protecting high-volume customer transaction loops without a single second of incident.",
-    accent: "blue",
+    metricLabel: "processed",
+    text: "Rebuilt the production infrastructure behind high-volume customer transactions. No incidents since go-live.",
   },
   {
-    sector: "Cloud Visibility & Scaling",
+    sector: "Performance and scaling",
     client: "PrimeDrive Imports",
     metric: "3x",
-    metricLabel: "Lead Conversions",
-    text: "Accelerating application page loads from 3.2 seconds down to a sub-50ms engine, dramatically amplifying user retention.",
-    accent: "emerald",
+    metricLabel: "lead conversions",
+    text: "Cut page load time from 3.2 seconds to under 50 ms. Lead conversions tripled after the rebuild.",
   },
   {
-    sector: "Healthcare Operations Systems",
+    sector: "Healthcare operations",
     client: "BXA Special Medical Centre",
     metric: "4hr",
-    metricLabel: "Automated Payroll",
-    text: "Transitioning complex manual operations into high-grade cloud automation architecture with bulletproof regulatory shielding.",
-    accent: "blue",
+    metricLabel: "payroll run, now automated",
+    text: "Moved manual operations, payroll included, onto automated cloud workflows with regulatory controls built in.",
   },
 ];
-
-const accentText: Record<string, string> = {
-  blue: "text-signal-blue",
-  emerald: "text-signal-emerald",
-};
 
 const standards = ["Kenya DPA 2019", "ISO 27001", "OWASP Top 10", "NIST CSF", "GDPR"];
 ---
 
-<section id="case-studies" class="py-24 sm:py-32">
+<section id="case-studies" class="py-20 sm:py-28">
   <div class="cga-container">
-    <div class="mx-auto mb-14 max-w-2xl text-center">
-      <p class="cga-eyebrow justify-center">Case Studies</p>
-      <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+    <div class="cga-section-head">
+      <p class="cga-eyebrow">Case studies</p>
+      <h2 class="cga-section-title">
         Outcomes, not testimonials.
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+    <!-- Rows, not a three-card strip: the figure leads each row, client and
+         context follow. Collapses to a single column below md. -->
+    <ol class="divide-y divide-midnight-border border-y border-midnight-border">
       {
         cases.map((item) => (
-          <article class="cga-card flex flex-col p-7">
-            <p class="text-[11px] font-medium uppercase tracking-[0.14em] text-ink-faint">
-              {item.sector}
-            </p>
-            <h3 class="mt-2 text-lg font-semibold text-white">{item.client}</h3>
-
-            <div class="my-6 border-t border-midnight-border" />
-
-            <div class:list={["font-mono text-3xl font-bold", accentText[item.accent]]}>
-              {item.metric}
+          <li class="grid grid-cols-1 gap-3 py-8 md:grid-cols-12 md:gap-8 md:py-10">
+            <div class="md:col-span-3">
+              <p class="text-4xl font-semibold tracking-[-0.03em] text-signal-blue sm:text-5xl" data-figure>
+                {item.metric}
+              </p>
+              <p class="mt-1 text-sm text-ink-muted">{item.metricLabel}</p>
             </div>
-            <p class="mt-1 text-[12.5px] font-medium uppercase tracking-wide text-ink-muted">
-              {item.metricLabel}
+            <div class="md:col-span-4 md:pt-2">
+              <h3 class="text-lg font-semibold text-white">{item.client}</h3>
+              <p class="mt-1 text-sm text-ink-muted">{item.sector}</p>
+            </div>
+            <p class="max-w-[60ch] text-[15px] leading-relaxed text-ink-secondary md:col-span-5 md:pt-2">
+              {item.text}
             </p>
-
-            <p class="mt-5 text-[14px] leading-relaxed text-ink-secondary">{item.text}</p>
-          </article>
+          </li>
         ))
       }
-    </div>
+    </ol>
 
     <!-- Compliance banner -->
-    <div class="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-y border-midnight-border py-7">
+    <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-midnight-border pb-8">
+      <p class="w-full text-sm text-ink-muted sm:w-auto">Frameworks we build against</p>
       {
         standards.map((standard, i) => (
           <>
-            <span class="font-mono text-[12.5px] tracking-tight text-ink-muted transition-colors duration-200 hover:text-ink-primary">
+            <span class="text-[15px] font-medium text-ink-secondary">
               {standard}
             </span>
-            {i < standards.length - 1 && (
-              <span class="hidden text-midnight-border-strong sm:inline" aria-hidden="true">
-                /
-              </span>
-            )}
           </>
         ))
       }

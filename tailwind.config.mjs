@@ -64,20 +64,10 @@ export default {
         },
       },
       fontFamily: {
-        sans: [
-          '"Plus Jakarta Sans Variable"',
-          '"Plus Jakarta Sans"',
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-        ],
-        mono: [
-          '"JetBrains Mono"',
-          "ui-monospace",
-          "SFMono-Regular",
-          "Menlo",
-          "monospace",
-        ],
+        // Geist (Vercel) for both roles: one family, two cuts. Mono is kept
+        // for code and real figures only, not decorative labels.
+        sans: ['"Geist Variable"', "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ['"Geist Mono Variable"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       fontSize: {
         "display-xl": ["clamp(2.75rem, 5vw + 1rem, 5.25rem)", { lineHeight: "1.02", letterSpacing: "-0.035em" }],
@@ -97,7 +87,7 @@ export default {
       },
       animation: {
         "pulse-dot": "pulse-dot 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "fade-up": "fade-up 0.6s ease-out both",
+        "fade-up": "fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
       },
       keyframes: {
         "pulse-dot": {

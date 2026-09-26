@@ -31,6 +31,32 @@
     border-radius: 2px;
   }
 
+  /* Headings balance their lines; body copy avoids single-word last lines. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p, li, dd {
+    text-wrap: pretty;
+  }
+
+  /* In-page anchors land below the fixed 64px navbar, not under it. */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  /* Numbers line up in columns and don't shift width as they change. */
+  .font-mono,
+  [data-figure] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  a,
+  button,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   ::selection {
     background-color: rgba(59, 130, 246, 0.35);
     color: #fff;
@@ -57,8 +83,8 @@
     scrollbar-color: #1e2635 #0b0f17;
   }
 
-  /* Disable ligatures anywhere monospace/code text appears. JetBrains
-     Mono — like most coding fonts — merges sequences like "===", "!=",
+  /* Disable ligatures anywhere monospace/code text appears. Coding
+     fonts (Geist Mono included) can merge sequences like "===", "!=",
      and "->" into single glyphs (e.g. "===" becomes "≡") when contextual
      ligatures are enabled. That's a nice touch in a code editor; on a
      marketing site showing a *sample* of real code, it silently rewrites
@@ -93,15 +119,37 @@
     @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10;
   }
 
+  /* Section label: sentence case, brand blue, with a short rule that ties
+     it to the left edge of the section. Replaces the tracked-out all-caps
+     eyebrow used before. */
   .cga-eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-ink-muted;
+    @apply inline-flex items-center gap-3 text-sm font-medium text-signal-blue;
+  }
+  .cga-eyebrow::before {
+    content: "";
+    @apply h-px w-6 bg-signal-blue-dim;
   }
 
+  /* Section heading block: left-aligned, capped line length. */
+  .cga-section-head {
+    @apply mb-12 max-w-2xl;
+  }
+  .cga-section-title {
+    @apply mt-4 text-3xl font-semibold tracking-[-0.025em] text-white sm:text-[2.5rem] sm:leading-[1.1];
+  }
+
+  /* Cards are flat panels. Only cards that are links react to hover. */
   .cga-card {
-    @apply relative rounded-xl border border-midnight-border bg-midnight-surface/60 backdrop-blur-sm transition-all duration-300;
+    @apply relative rounded-lg border border-midnight-border bg-midnight-surface;
+  }
+  a.cga-card {
+    @apply transition-colors duration-200 hover:border-midnight-border-strong hover:bg-midnight-raised;
   }
 
-  .cga-card:hover {
-    @apply border-signal-blue/30 shadow-card-hover;
+  .cga-btn-primary {
+    @apply inline-flex min-h-[44px] items-center justify-center rounded-md bg-signal-blue-dim px-5 text-[15px] font-medium text-white transition-[background-color,transform] duration-150 hover:bg-[#1a6ad4] active:scale-[0.98] active:bg-[#124f9f];
+  }
+  .cga-btn-secondary {
+    @apply inline-flex min-h-[44px] items-center justify-center rounded-md border border-midnight-border-strong px-5 text-[15px] font-medium text-ink-primary transition-[background-color,border-color,transform] duration-150 hover:border-ink-faint hover:bg-midnight-surface active:scale-[0.98];
   }
 }

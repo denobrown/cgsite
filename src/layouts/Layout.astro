@@ -8,10 +8,8 @@
 // already expects to exist: no inline scripts, no third-party font/style
 // origins, one first-party stylesheet.
 
-import "@fontsource-variable/plus-jakarta-sans";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
-import "@fontsource/jetbrains-mono/600.css";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
 import "../styles/global.css";
 import ChatWidget from "../components/ChatWidget.astro";
 import PrivacyNotice from "../components/PrivacyNotice.astro";
@@ -164,9 +162,19 @@ const siteName = "CloudGrid Africa";
       ],
     })} />
 
+    <!-- Privacy-friendly analytics by Plausible (cookieless).
+         is:inline keeps Astro from bundling/rewriting these tags, so the
+         inline init block reaches dist/ byte-for-byte and gets picked up
+         by the CSP hash generator. plausible.io is allowed in script-src
+         and connect-src via scripts/lib/collect-inline-script-hashes.mjs. -->
+    <script is:inline async src="https://plausible.io/js/pa-avN26ApM5w5YjI63DQDtw.js"></script>
+    <script is:inline>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+
     <!-- Resource hints — only origins the client scripts actually call -->
-    <link rel="preconnect" href="https://api.open-meteo.com" />
-    <link rel="dns-prefetch" href="https://api.open-meteo.com" />
+    <link rel="preconnect" href="https://plausible.io" />
   </head>
 
   <body class="relative min-h-screen overflow-x-hidden bg-midnight font-sans text-ink-primary">

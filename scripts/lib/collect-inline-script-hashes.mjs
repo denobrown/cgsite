@@ -102,7 +102,10 @@ export const BASE_DIRECTIVES = {
   "style-src": ["'self'"],
   "img-src": ["'self'", "data:", "https:"],
   "font-src": ["'self'"],
-  "connect-src": ["'self'", "https://api.open-meteo.com"],
+  // plausible.io: the analytics script POSTs pageview events to
+  // https://plausible.io/api/event, so it needs connect-src as well as
+  // script-src (below).
+  "connect-src": ["'self'", "https://plausible.io"],
   // Calendly's inline booking widget — the "Get in touch" section embeds
   // it directly (https://calendly.com/dmurila) rather than linking out, so
   // the visitor can actually book without leaving the site. This needs two
@@ -117,7 +120,10 @@ export const BASE_DIRECTIVES = {
   // Nothing else changes: the iframe's own network requests happen inside
   // Calendly's document, governed by THEIR CSP, not this site's
   // connect-src — so no connect-src change is needed for the embed to work.
-  "script-src-extra": ["https://assets.calendly.com"],
+  //   3. plausible.io serves the analytics loader as an external script,
+  //      allowed by exact origin. Its small inline init block is hashed
+  //      automatically like every other inline script.
+  "script-src-extra": ["https://assets.calendly.com", "https://plausible.io"],
   "frame-src": ["https://calendly.com"],
   "form-action": ["'self'"],
   "frame-ancestors": ["'none'"],

@@ -57,15 +57,8 @@ const lastUpdated = "September 2026";
               reload the page.
             </li>
             <li>
-              <strong>Live weather &amp; time display:</strong> the "Live Systems Strip" on
-              our homepage fetches current Nairobi weather from
-              <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.
-              This is a fixed location lookup (Nairobi's coordinates) — no data about you or
-              your device is sent to Open-Meteo.
-            </li>
-            <li>
-              <strong>Performance and traffic analytics:</strong> we use Vercel Web
-              Analytics and Vercel Speed Insights to understand aggregate visitor numbers
+              <strong>Performance and traffic analytics:</strong> we use Plausible
+              Analytics, Vercel Web Analytics and Vercel Speed Insights to understand aggregate visitor numbers
               and page performance. Both are designed to operate without setting tracking
               cookies and without building an individual profile of you across other sites.
             </li>
@@ -114,8 +107,7 @@ const lastUpdated = "September 2026";
           <p>
             This site is served exclusively over HTTPS, enforces a strict
             Content-Security-Policy, and never exposes API keys or credentials to your
-            browser — every integration with a third-party service (email, AI chat,
-            weather) is proxied through our own server-side infrastructure. Internally, we
+            browser — every integration with a third-party service (email and AI chat) is proxied through our own server-side infrastructure. Internally, we
             apply the same engineering standards we deliver to clients.
           </p>
 

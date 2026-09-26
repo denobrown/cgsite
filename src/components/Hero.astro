@@ -1,82 +1,90 @@
 ---
 // src/components/Hero.astro
-const clients = [
-  "PrimeDrive Imports",
-  "BXA Medical",
-  "Capitol Realtors",
-  "Pinnoserv LTD",
+//
+// Left-aligned, two-column hero. The left side says what CloudGrid does and
+// offers two actions. The right side is a short fact sheet: things a buyer
+// can verify (where the infrastructure lives, which frameworks the work is
+// built against, who answers the call), set as a definition list rather
+// than a row of big-number stat tiles.
+
+// logo: path under /public. Leave undefined and the name renders as text,
+// so a missing file never produces a broken image. Use monochrome/white SVGs
+// so they sit evenly on the dark background (opacity handles the muted look).
+const clients: { name: string; logo?: string }[] = [
+  { name: "PrimeDrive Imports", logo: undefined /* "/clients/primedrive.svg" */ },
+  { name: "BXA Medical", logo: undefined /* "/clients/bxa-medical.svg" */ },
+  { name: "Capitol Realtors", logo: undefined /* "/clients/capitol-realtors.svg" */ },
+  { name: "Pinnoserv LTD", logo: undefined /* "/clients/pinnoserv.svg" */ },
+];
+
+const facts = [
+  { term: "Infrastructure", detail: "Co-located at Raxio Data Centre, Nairobi (Tier III)" },
+  { term: "Built against", detail: "Kenya DPA 2019, ISO 27001, PCI-DSS, CBK cloud guidance" },
+  { term: "Payments", detail: "M-Pesa Daraja integrations with idempotent reconciliation" },
+  { term: "Who you talk to", detail: "A principal engineer, from first call to handover" },
 ];
 ---
 
-<section class="relative pt-40 pb-20 sm:pt-48 sm:pb-28">
-  <div class="cga-container flex flex-col items-center text-center">
-    <!-- Over-headline -->
-    <div class="cga-eyebrow mb-6 animate-fade-up">
-      <span class="relative flex h-1.5 w-1.5">
-        <span class="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-signal-blue"></span>
-      </span>
-      Engineering Africa's Digital Future
-    </div>
+<section class="relative pt-32 pb-16 sm:pt-40 sm:pb-20">
+  <div class="cga-container">
+    <div class="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-7">
+        <h1
+          class="text-[2.75rem] sm:max-w-[15ch] font-semibold leading-[1.02] tracking-[-0.04em] text-white animate-fade-up sm:text-[3.5rem] lg:text-[4rem]"
+        >
+          Cloud and security engineering for East African enterprise.
+        </h1>
 
-    <!-- Main headline -->
-    <h1
-      class="max-w-4xl text-display-lg font-bold text-white sm:text-display-xl animate-fade-up [animation-delay:60ms]"
-    >
-      Cloud &amp; Cybersecurity Engineering for
-      <span class="relative whitespace-nowrap">
-        <span class="relative z-10">East African Enterprise</span>
-      </span>.
-    </h1>
+        <p
+          class="mt-7 max-w-[58ch] text-[17px] leading-[1.65] text-ink-secondary animate-fade-up [animation-delay:80ms]"
+        >
+          We design and run cloud environments, secure payment and transaction
+          pipelines, and build to the Kenya Data Protection Act 2019 from day one.
+          Nairobi engineers, working on local infrastructure.
+        </p>
 
-    <!-- Sub-headline -->
-    <p
-      class="mt-7 max-w-2xl text-balance text-base leading-relaxed text-ink-secondary sm:text-lg animate-fade-up [animation-delay:120ms]"
-    >
-      We architect resilient cloud environments, secure critical transaction pipelines, and
-      ensure strict compliance with the <span class="text-ink-primary">Kenya Data Protection Act 2019</span>.
-      Built by native engineers who understand local scale.
-    </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row animate-fade-up [animation-delay:160ms]">
+          <a href="/#contact" class="cga-btn-primary">Book a consultation</a>
+          <a href="/#case-studies" class="cga-btn-secondary">See client outcomes</a>
+        </div>
+      </div>
 
-    <!-- Primary CTA -->
-    <div class="mt-10 animate-fade-up [animation-delay:180ms]">
-      <a
-        href="/#contact"
-        class="group inline-flex items-center gap-2 rounded-md bg-white px-6 py-3.5 text-sm font-semibold text-midnight shadow-glow-blue transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink-primary"
+      <dl
+        class="self-end border-t border-midnight-border-strong lg:col-span-5 animate-fade-up [animation-delay:240ms]"
       >
-        Schedule an Engineering Consultation
-        <span class="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
-      </a>
-    </div>
-
-    <!-- Trust badges -->
-    <div class="mt-20 w-full max-w-3xl animate-fade-up [animation-delay:240ms]">
-      <p class="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-ink-faint">
-        Trusted by 14+ East African enterprises
-      </p>
-      <!-- Fixed 2-column grid (not flex-wrap) so both rows share the same
-           column tracks at every viewport width. The previous version used
-           flex-wrap + justify-center with inline "•" separators, which
-           centers each WRAPPED LINE independently based on that line's own
-           content width — since row 1 and row 2 have different total
-           widths, row 2 visibly shifted relative to row 1. A grid doesn't
-           have this failure mode: columns are shared, not re-centered per
-           row. The divider is a border on the right-hand column instead of
-           an inline dot, since inline separators between grid cells can't
-           cleanly indicate "start of a new row" vs "next item" once the
-           layout wraps to more than one row. -->
-      <div class="grid grid-cols-2 gap-x-6 gap-y-4 border-y border-midnight-border py-6 font-mono text-[13px] tracking-tight text-ink-muted sm:gap-x-10">
         {
-          clients.map((client, i) => (
-            <span
-              class={`text-center transition-colors duration-200 hover:text-ink-primary ${
-                i % 2 === 1 ? "border-l border-midnight-border-strong" : ""
-              }`}
-            >
-              {client}
-            </span>
+          facts.map((f) => (
+            <div class="grid grid-cols-[8.5rem_1fr] gap-4 border-b border-midnight-border py-4 sm:grid-cols-[10rem_1fr]">
+              <dt class="text-sm text-ink-muted">{f.term}</dt>
+              <dd class="text-[15px] leading-snug text-ink-primary">{f.detail}</dd>
+            </div>
           ))
         }
-      </div>
+      </dl>
+    </div>
+
+    <!-- Clients -->
+    <div class="mt-20 flex flex-col gap-5 border-t border-midnight-border pt-8 sm:flex-row sm:items-center sm:gap-10">
+      <p class="shrink-0 text-sm text-ink-muted">Trusted by 14+ East African enterprises, including</p>
+      <ul class="grid grid-cols-2 gap-x-8 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-10">
+        {
+          clients.map((client) => (
+            <li class="flex h-8 items-center text-[15px] font-medium text-ink-secondary">
+              {client.logo ? (
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  loading="lazy"
+                  decoding="async"
+                  class="max-h-7 max-w-[140px] object-contain opacity-70"
+                />
+              ) : (
+                client.name
+              )}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>
