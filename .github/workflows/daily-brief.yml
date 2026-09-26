@@ -1,0 +1,39 @@
+name: Daily brief
+
+on:
+  schedule:
+    - cron: "0 5 * * *" # 05:00 UTC = 08:00 Nairobi
+  workflow_dispatch: {} # "Run workflow" button for manual runs
+
+permissions:
+  contents: write # lets the built-in GITHUB_TOKEN push the new post
+
+concurrency:
+  group: daily-brief
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Write today's brief
+        run: node scripts/generate-daily-brief.mjs
+
+      - name: Commit if a post was written
+        run: |
+          git config user.name "CloudGrid Africa Bot"
+          git config user.email "bot@cloudgridafrica.com"
+          git add src/content/blog/
+          if git diff --cached --quiet; then
+            echo "Nothing new to publish."
+          else
+            git commit -m "blog: daily brief $(date -u +%Y-%m-%d)"
+            git push
+          fi
