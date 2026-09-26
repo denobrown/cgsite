@@ -69,6 +69,17 @@ function hasSrcAttribute(scriptNode) {
   return (scriptNode.attrs || []).some((attr) => attr.name === "src");
 }
 
+// Data blocks (JSON-LD, JSON) are never executed, so CSP script-src doesn't
+// apply to them and hashing them only bloats the header. This matters now
+// that every daily brief page carries its own BlogPosting JSON-LD: without
+// this skip, the CSP header would grow by one hash per day, indefinitely.
+// Executable types (no type, text/javascript, module, etc.) are still hashed.
+const DATA_BLOCK_TYPES = new Set(["application/ld+json", "application/json"]);
+function isDataBlock(scriptNode) {
+  const type = (scriptNode.attrs || []).find((a) => a.name === "type")?.value?.trim().toLowerCase();
+  return type ? DATA_BLOCK_TYPES.has(type) : false;
+}
+
 /** parse5 stores a <script>'s text content as a single text child node. */
 function getScriptTextContent(scriptNode) {
   const textChild = (scriptNode.childNodes || []).find((c) => c.nodeName === "#text");
@@ -87,6 +98,7 @@ export async function collectInlineScriptHashes(distDir) {
 
     for (const node of scriptNodes) {
       if (hasSrcAttribute(node)) continue; // external file — covered by 'self'
+      if (isDataBlock(node)) continue; // JSON-LD etc. — not executed, not subject to script-src
       const text = getScriptTextContent(node);
       if (text.trim().length === 0) continue;
       hashes.add(`sha256-${sha256Base64(text)}`);

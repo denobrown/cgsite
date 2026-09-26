@@ -6,12 +6,10 @@
 // time like every other page — same zero-runtime-JS guarantee as the rest
 // of the site.
 //
-// netlify/functions/generate-daily-post.js is the automated writer: a
-// Netlify Scheduled Function that runs once daily, curates Kenya/Africa/
-// world tech coverage, and commits a new Markdown file matching this exact
-// schema directly to the connected GitHub repository — which triggers
-// Netlify's normal auto-deploy and regenerates these pages with the new
-// post included. No custom CMS or database is required.
+// scripts/generate-daily-brief.mjs is the automated writer. The GitHub
+// Actions workflow .github/workflows/daily-brief.yml runs it every morning
+// and commits the new Markdown file to this repo; Vercel rebuilds on the
+// push. No CMS, database, or Vercel cron is involved.
 
 import { defineCollection, z } from "astro:content";
 

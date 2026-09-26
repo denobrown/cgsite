@@ -1,11 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "crons": [
-    {
-      "path": "/api/generate-daily-post",
-      "schedule": "0 5 * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -32,7 +26,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "script-src 'self' https://assets.calendly.com https://plausible.io 'sha256-WOD0lbLYleR1cpNdrZ74dE2nMg1wKbiXz0MnW4bGacE=' 'sha256-s3GjtVo80AO5y21xNb09L193qY2mDVWzcLbCiBHrn4s=' 'sha256-jqFKTdN23ban9uUyxkYol0iwzAxGz9Mk4aHL6wbgeVs=' 'sha256-9Ci3cWL9D6SZLUAqoaiM4FdxKD+fEap42Zg9t9OjJxM=' 'sha256-zkr1oFBpZGC2X2DnMBg28iJWV4dhqc0RtAlE0u+UNes=' 'sha256-IBaGy+ZtrZoDjTVpQu1BJGCvpq2WWeIbDD3/rYBG5Ls=' 'sha256-nrYVfKcNWYDvJpiui5yfhMlo99LpC1l48otiGYIi/qE=' 'sha256-pYYnJQswEMEf6/4NObtmdmJcQ8oPeIfuIizXwJ/IMXs=' 'sha256-2af5cTN91A3LsZvIg6vBvTMR8JVZ9GADGyL870LFTSs=' 'sha256-TeFj15LPlG0kjJvZWH8HBGqgcgp8O4uI5bvI5U0BnWg=' 'sha256-Lgr7h7VOBiJK3oyYkz2i6yvU09KOxqAxqQGHTv03ouY=' 'sha256-Wg95Yb6TVKhs4TrVDvttnoUld5rfA66WITPiiJO2YPg=' 'sha256-cd+WFdXf6SCydYgMbfpkuT3aJIywgKJPep4VnNnBs0s=' 'sha256-Kk9OvrM+NAMShzHSwGGEmoyIbHmrPr7/aJ5dkH6d55Y=' 'sha256-+c1koB4zbNNQ7Ec9208z0qCWdBQFezOJxDYmCYRCtnQ=' 'sha256-f7VSmVUWz38bzZuuR9cK0psLm/mtD7lQslu7bbvFSWk='; default-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://plausible.io; frame-src https://calendly.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests;"
+          "value": "script-src 'self' https://assets.calendly.com https://plausible.io 'sha256-s3GjtVo80AO5y21xNb09L193qY2mDVWzcLbCiBHrn4s=' 'sha256-jqFKTdN23ban9uUyxkYol0iwzAxGz9Mk4aHL6wbgeVs=' 'sha256-9Ci3cWL9D6SZLUAqoaiM4FdxKD+fEap42Zg9t9OjJxM=' 'sha256-cd+WFdXf6SCydYgMbfpkuT3aJIywgKJPep4VnNnBs0s=' 'sha256-f7VSmVUWz38bzZuuR9cK0psLm/mtD7lQslu7bbvFSWk='; default-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://plausible.io; frame-src https://calendly.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests;"
         }
       ]
     },
@@ -53,6 +47,18 @@
           "value": "public, max-age=3600, must-revalidate"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/blog/posts/daily-briefing-:date.html",
+      "destination": "/blog/daily-brief-:date/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/index.html",
+      "destination": "/blog/",
+      "permanent": true
     }
   ]
 }
