@@ -7,14 +7,22 @@
 // built against, who answers the call), set as a definition list rather
 // than a row of big-number stat tiles.
 
-// logo: path under /public. Leave undefined and the name renders as text,
-// so a missing file never produces a broken image. Use monochrome/white SVGs
-// so they sit evenly on the dark background (opacity handles the muted look).
-const clients: { name: string; logo?: string }[] = [
-  { name: "PrimeDrive Imports", logo: undefined /* "/clients/primedrive.svg" */ },
-  { name: "BXA Medical", logo: undefined /* "/clients/bxa-medical.svg" */ },
-  { name: "Capitol Realtors", logo: undefined /* "/clients/capitol-realtors.svg" */ },
-  { name: "Pinnoserv LTD", logo: undefined /* "/clients/pinnoserv.svg" */ },
+// White-on-transparent marks generated from each client's own logo file
+// (backgrounds removed, recoloured to a single tone) so the strip reads as
+// one set on the navy canvas instead of nine differently-coloured boxes.
+// w/h are the display size in CSS px (cls sets the same height; the CSP
+// blocks inline style attributes, so sizing has to come from classes); the files are ~2x that for retina.
+// h is tuned per logo for optical balance (wide wordmarks sit shorter).
+const clients: { name: string; logo: string; w: number; h: number; cls: string }[] = [
+  { name: "PrimeDrive Imports", logo: "/clients/primedrive-imports.webp", w: 51, h: 40, cls: "h-10" },
+  { name: "BIXA Medical & Surgical Specialist Hospital", logo: "/clients/bxa-medical.webp", w: 53, h: 34, cls: "h-[34px]" },
+  { name: "Pinnoserv", logo: "/clients/pinnoserv.webp", w: 78, h: 30, cls: "h-[30px]" },
+  { name: "Cherie Africa", logo: "/clients/cherie-africa.webp", w: 35, h: 40, cls: "h-10" },
+  { name: "Ethereal Pharma", logo: "/clients/ethereal-pharma.webp", w: 38, h: 40, cls: "h-10" },
+  { name: "Fayhope Express", logo: "/clients/fayhope-express.webp", w: 43, h: 38, cls: "h-[38px]" },
+  { name: "KayFarm", logo: "/clients/kayfarm.webp", w: 40, h: 40, cls: "h-10" },
+  { name: "One Dance Safaris", logo: "/clients/one-dance-safaris.webp", w: 41, h: 38, cls: "h-[38px]" },
+  { name: "R.O.G Church", logo: "/clients/rog-church.webp", w: 35, h: 40, cls: "h-10" },
 ];
 
 const facts = [
@@ -64,23 +72,21 @@ const facts = [
     </div>
 
     <!-- Clients -->
-    <div class="mt-20 flex flex-col gap-5 border-t border-midnight-border pt-8 sm:flex-row sm:items-center sm:gap-10">
-      <p class="shrink-0 text-sm text-ink-muted">Trusted by 14+ East African enterprises, including</p>
-      <ul class="grid grid-cols-2 gap-x-8 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-10">
+    <div class="mt-20 border-t border-midnight-border pt-8">
+      <p class="text-sm text-ink-muted">Trusted by 14+ East African enterprises, including</p>
+      <ul class="mt-6 grid grid-cols-3 items-center gap-x-6 gap-y-8 sm:grid-cols-5 lg:flex lg:flex-wrap lg:justify-between lg:gap-x-8">
         {
-          clients.map((client) => (
-            <li class="flex h-8 items-center text-[15px] font-medium text-ink-secondary">
-              {client.logo ? (
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  loading="lazy"
-                  decoding="async"
-                  class="max-h-7 max-w-[140px] object-contain opacity-70"
-                />
-              ) : (
-                client.name
-              )}
+          clients.map((c) => (
+            <li class="flex h-10 items-center justify-center lg:justify-start">
+              <img
+                src={c.logo}
+                alt={c.name}
+                width={c.w}
+                height={c.h}
+                loading="lazy"
+                decoding="async"
+                class:list={["w-auto max-w-full object-contain opacity-70", c.cls]}
+              />
             </li>
           ))
         }
